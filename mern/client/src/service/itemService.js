@@ -1,16 +1,81 @@
-const baseUrl = 'http://localhost:5050/food';
+const alcohol = 'http://localhost:5050/alcohol';
+const  alcoholfree= 'http://localhost:5050/alcfree';
+const  dessert= 'http://localhost:5050/dessert';
+const  grill= 'http://localhost:5050/grill';
+const  hlqb= 'http://localhost:5050/hlqb';
+const  hotdishes= 'http://localhost:5050/hotdish';
+const  maindishes= 'http://localhost:5050/maindish';
+const  salad= 'http://localhost:5050/salad';
+const  soup= 'http://localhost:5050/soup';
+const  topping= 'http://localhost:5050/topping';
+
 const cartUrl = 'http://localhost:3030/data/cart';
 
 const token = localStorage.getItem('accessToken');
 
-export const getAll = async () =>{
-    const response = await fetch(baseUrl);
-  
+export const getAlc = async () =>{
+    const response = await fetch(alcohol);
     const result = await response.json();
-
     const data = Object.values(result);
 
-    
+    return data;
+};
+
+export const getAlcFree = async () =>{
+    const response = await fetch(alcoholfree);
+    const result = await response.json();
+    const data = Object.values(result);
+    return data;
+};
+
+export const getDess = async () =>{
+    const response = await fetch(dessert);
+    const result = await response.json();
+    const data = Object.values(result);
+    return data;
+};
+
+export const getGrill = async () =>{
+    const response = await fetch(grill);
+    const result = await response.json();
+    const data = Object.values(result);
+    return data;
+};
+
+export const getHlqb = async () =>{
+    const response = await fetch(hlqb);
+    const result = await response.json();
+    const data = Object.values(result);
+    return data;
+};
+export const getHot = async () =>{
+    const response = await fetch(hotdishes);
+    const result = await response.json();
+    const data = Object.values(result);
+    return data;
+};
+export const getMain = async () =>{
+    const response = await fetch(maindishes);
+    const result = await response.json();
+    const data = Object.values(result);
+    return data;
+};
+export const getSal = async () =>{
+    const response = await fetch(salad);
+    const result = await response.json();
+    const data = Object.values(result);
+    return data;
+};
+export const getSoup = async () =>{
+    const response = await fetch(soup);
+    const result = await response.json();
+    const data = Object.values(result);
+    return data;
+};
+export const getTop = async () =>{
+    const response = await fetch(topping);
+    const result = await response.json();
+    const data = Object.values(result);
     return data;
 };
 

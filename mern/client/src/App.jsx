@@ -40,6 +40,7 @@ function App() {
        <Route path='/shop/item' element={<ShopItem />} />
        <Route path='/shop/alcohol' element={<Shop />} />
        <Route path='/shop/noalcohol' element={<Shop />} />
+       
    
        
 
