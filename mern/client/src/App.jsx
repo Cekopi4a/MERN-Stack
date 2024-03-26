@@ -35,6 +35,7 @@ function App() {
       <Route path='*' element={<NoFound />} />
        <Route path={Path.Home} element={<Home />} />
        <Route path='/login' element={<Login />} />
+       <Route path='/login/:queryParameters' element={<Login />} />
        <Route path='/register' element={<Register />} />
        <Route path='/shop' element={<Shop />} />
        <Route path='/shop/item' element={<ShopItem />} />

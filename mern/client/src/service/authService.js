@@ -1,12 +1,12 @@
 import * as request from '../request/request';
 
-const baseUrl = 'http://localhost:3030/users';
+const baseUrl = 'http://localhost:5050/users';
 
-export const login = async (email, password,firstName) => {
-    const result = await request.post(`${baseUrl}/login`, {
+export const login = async (email, password,table) => {
+    const result = await request.get(`${baseUrl}`, {
         email,
         password,
-        firstName
+       table
     });
 
     return result;

@@ -10,6 +10,7 @@ import maindish from "./routes/maindish.js";
 import salad from "./routes/salad.js";
 import soup from "./routes/soup.js";
 import topping from "./routes/topping.js";
+import login from "./routes/login.js";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -26,6 +27,7 @@ app.use("/maindish", maindish);
 app.use("/salad", salad);
 app.use("/soup", soup);
 app.use("/topping", topping);
+app.use("/login", login);
 
 // start the Express server
 app.listen(PORT, () => {
