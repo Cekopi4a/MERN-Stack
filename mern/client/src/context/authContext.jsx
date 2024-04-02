@@ -21,7 +21,7 @@ const[auth,setAuth] = usePersistedState('auth', {});
 
 
 const loginSubmitHandler = async (values) => {
-   const result = await authService.login(values.email, values.password,values.firstName);
+   const result = await authService.login(values.email, values.password);
 
    setAuth(result);
    localStorage.setItem('accessToken', result.accessToken);
@@ -46,10 +46,8 @@ const values = {
   loginSubmitHandler,
   registerSubmitHandler,
   userId: auth._id,
-  username: auth.username,
   email: auth.email,
-  firstName:auth.firstName,
-  lastName:auth.lastName,
+  role: auth.role,
   isAuthenticated: !!auth.accessToken,
 }
 

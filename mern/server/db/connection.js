@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+const{ MongoClient, ServerApiVersion }= require ('mongodb');
 const URI = "mongodb+srv://analytics:Cekopi4a@cluster0.slg4lq3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const client = new MongoClient(URI, {
@@ -11,9 +11,9 @@ const client = new MongoClient(URI, {
 
 try {
   // Connect the client to the server
-  await client.connect();
+  client.connect();
   // Send a ping to confirm a successful connection
-  await client.db("admin").command({ ping: 1 });
+   client.db("admin").command({ ping: 1 });
   console.log("Pinged your deployment. You successfully connected to MongoDB!");
 } catch (err) {
   console.error(err);
@@ -21,4 +21,4 @@ try {
 
 let db = client.db("Restaurant");
 
-export default db;
+module.exports =  db;

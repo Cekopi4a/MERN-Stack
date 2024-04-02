@@ -42,7 +42,7 @@ const ShopItem = ({
            
             <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
             <div className="container text-center">
-            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+            <a href="#" className="btn border border-secondary rounded-pill px-3 text-primary"><i className="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                </div>
             </div>
         </div>

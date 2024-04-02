@@ -15,11 +15,12 @@ export default function useForm (submitHandler, initialValues) {
       e.preventDefault();
 
         submitHandler(values);
+        console.log(values);
   };
 
   return {
       values,
       onChange,
-      onSubmit,
+      onSubmit
   }
 }
