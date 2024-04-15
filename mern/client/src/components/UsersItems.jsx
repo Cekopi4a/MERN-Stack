@@ -4,7 +4,7 @@ import * as itemService from "../service/itemService";
 import { create } from '../service/itemService';
 import { useEffect,useState,useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import authContext from '../context/authContext'
+import {AuthContext} from '../context/AuthContext';
 
 const UsersItems = () => {
 	const navigate= useNavigate();

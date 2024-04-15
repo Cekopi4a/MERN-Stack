@@ -1,62 +1,52 @@
 import styles from './Login.module.css'
-import useForm from '../hooks/useForm';
-import { useContext, useEffect } from 'react';
-import authContext from '../context/authContext';
+import { useState } from "react"
+import { useLogin } from "../hooks/useLogin"
 import { useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
-const LoginFormKeys ={
-  Email:'email',
-  Password: 'password',
-};
-
- export default function Login (){
- 
+const Login = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const {login, error, isLoading} = useLogin()
   const [queryParameters] = useSearchParams();
-  
-  const {userForm,setUserForm} = useState({});
-  const Email = queryParameters.get("email");
-  const Password = queryParameters.get("password");
 
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
   
-   const {loginSubmitHandler} = useContext(authContext);
-  
-     const {values, onChange, onSubmit} = useForm(loginSubmitHandler,{
-       [LoginFormKeys.Email]:queryParameters.get("email"),
-       [LoginFormKeys.Password]:queryParameters.get("password"),
-     });
-     
-     return(
- <div className='container'>
+    await login(queryParameters.get("email"), queryParameters.get("password"))
+  }
+
+  return (
+<div className='container'>
    <h1>Login</h1>
  
  <img src='https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg' className={styles.snimka} alt='' />
- <form method="post" onSubmit={onSubmit}>
+ <form method="post" onSubmit={handleSubmit}>
    <div className="container">
  
      <label htmlFor="username"><h4>Email</h4></label>
  
-     <input type="text"
-     placeholder="Enter Email"
-     id='email'
-      name={LoginFormKeys.Email} 
-      onChange={onChange}
-       value={values[LoginFormKeys.Email]} required />
+     <input 
+        type="text" 
+        onChange={(e) => setEmail(e.target.value)} 
+        value={email} 
+      />
 
     <label htmlFor="password"><h4>Password</h4></label>
-    <input type="password" 
-    id='password'
-    placeholder="Enter Password"
-     name={LoginFormKeys.Password}
-      onChange={onChange} 
-      value={values[LoginFormKeys.Password]} required />
+    <input 
+        type="password" 
+        onChange={(e) => setPassword(e.target.value)} 
+        value={password} 
+      />
         
-    <button className={styles.login}  type="submit">Login</button>
+        <button className={styles.login} disabled={isLoading}>Log in</button>
+      {error && <div className="error">{error}</div>}
   </div>
 </form>
 
-</div>
+</div> 
+  )
+}
 
-    );
-};
+export default Login

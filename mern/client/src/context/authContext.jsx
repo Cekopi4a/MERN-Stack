@@ -1,61 +1,37 @@
-import { createContext } from "react";
-import { useState } from 'react'
-import {useNavigate} from 'react-router-dom'
-import Path from '../path'
+import { createContext, useReducer, useEffect } from 'react';
 
-import usePersistedState from '../hooks/usePersistedState';
-import * as authService from '../service/authService'
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-
-AuthContext.displayName = 'authContext';
-
-export const AuthProvider = ({
-    children,
-    value
-}) => {
-
-
-const navigate = useNavigate();
-const[auth,setAuth] = usePersistedState('auth', {});
-
-
-const loginSubmitHandler = async (values) => {
-   const result = await authService.login(values.email, values.password);
-
-   setAuth(result);
-   localStorage.setItem('accessToken', result.accessToken);
-   navigate(Path.Home);
+export const authReducer = (state, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      return { user: action.payload }
+    case 'LOGOUT':
+      return { user: null }
+    default:
+      return state
+  }
 }
 
-const registerSubmitHandler = async (values) => {
- const result = await authService.register(values.email,values.password,values.firstName);
+export const AuthContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, { 
+    user: null
+  })
 
- setAuth(result);
- localStorage.setItem('accessToken',result.accessToken);
-   navigate(Path.Home);
-}
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'))
 
-const logoutHandler = () => {
-  setAuth({});
-  localStorage.removeItem('accessToken');
-}
+    if (user) {
+      dispatch({ type: 'LOGIN', payload: user }) 
+    }
+  }, [])
 
-const values = {
-  logoutHandler,
-  loginSubmitHandler,
-  registerSubmitHandler,
-  userId: auth._id,
-  email: auth.email,
-  role: auth.role,
-  isAuthenticated: !!auth.accessToken,
-}
+  console.log('AuthContext state:', state)
+  
+  return (
+    <AuthContext.Provider value={{ ...state, dispatch }}>
+      { children }
+    </AuthContext.Provider>
+  )
 
-    return(
-        <AuthContext.Provider value={values}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
-
-export default AuthContext;
+};

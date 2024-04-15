@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import authContext from "../context/authContext";
+import {AuthContext} from '../context/AuthContext';
 import useForm from "../hooks/useForm";
 
 const RegisterFormKeys = {

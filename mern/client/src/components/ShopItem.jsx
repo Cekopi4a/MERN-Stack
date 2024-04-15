@@ -1,6 +1,6 @@
 import { Outlet, Link, useParams } from "react-router-dom";
 import { useContext } from 'react';
-import authContext from '../context/authContext';
+import {AuthContext} from '../context/AuthContext';
 import CartContext from "../context/cartContext";
 
 const ShopItem = ({
@@ -14,8 +14,8 @@ const ShopItem = ({
 }) => {
     const {
         isAuthenticated,
-       } = useContext(authContext);
-       const {userId } = useContext(authContext);
+       } = useContext(AuthContext);
+       const {userId } = useContext(AuthContext);
        const addUserId = userId;
        const {addCart} =useContext(CartContext);
     return(

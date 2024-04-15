@@ -20,8 +20,8 @@ exports.signup = async (req,res,next) => {
         })
 
         //Assign JWT (JSON Web Token) to user
-        const token = jwt.sign({_id: newUser._id}, 'secretkey123',{
-            expiresIn: '900',
+        const token = jwt.sign({id: newUser._id}, 'secretkey123',{
+            expiresIn: '8h',
 
         })
 
@@ -52,7 +52,7 @@ exports.login = async (req,res,next) => {
         return next(new createError('Invalid email or password', 401));
     }
 
-    const token = jwt.sign({_id: user._id}, 'secretkey123',{
+    const token = jwt.sign({id: user._id}, 'secretkey123',{
         expiresIn: '90d',
     });
 
@@ -61,7 +61,7 @@ exports.login = async (req,res,next) => {
             token,
             message:'Logged in successfully',
             user:{
-                _id: user._id,
+                id: user._id,
                 email: user.email,
                 role: user.role,
             },

@@ -4,7 +4,7 @@ import { useParams, } from "react-router-dom";
 import style from './ShopItemDetails.module.css'
 import * as commentService from '../service/commentService'
 import * as itemService from '../service/itemService'
-import authContext from "../context/authContext";
+import {AuthContext} from '../context/AuthContext';
 import CartContext from "../context/cartContext";
 import ShopItem from "./ShopItem";
 

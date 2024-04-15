@@ -139,7 +139,7 @@ export const getLatest = async () => {
         pageSize: 4,
     });
 
-    const response = await fetch(`${baseUrl}?${query}`);
+    const response = await fetch(`${hlqb}?${query}`);
   
     const result = await response.json();
 

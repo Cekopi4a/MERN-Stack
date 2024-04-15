@@ -1,18 +1,22 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom' 
-import authContext from '../context/authContext';
+import {AuthContext} from '../context/AuthContext';
 import CartContext from '../context/cartContext';
 import style from './Navbar.module.css'
+import { useLogout } from '../hooks/useLogout'
 
 const Navbar = () => {
    const {
-    isAuthenticated,
-    username,
-    firstName,
+    user,
     email,
-   } = useContext(authContext);
+   } = useContext(AuthContext);
 
    const {cartItem} =useContext(CartContext);
+   const { logout } = useLogout()
+
+   const handleClick = () => {
+    logout()
+  }
 
   return(
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -27,7 +31,7 @@ const Navbar = () => {
                     <a className="nav-link dropdown-toggle" id="navbarDropdown" href="/shop" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                     <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><Link className="dropdown-item" to="/shop">All Products</Link></li>
-                        {isAuthenticated && (
+                        {user && (
                             <div> <li><hr className="dropdown-divider" /></li>
                         <li><Link className="dropdown-item" to="/myItem">My Item</Link></li>
                         </div>)}
@@ -37,7 +41,7 @@ const Navbar = () => {
 
 
             <div className="d-flex">
-            {!isAuthenticated && (
+            {!user && (
                     <>
                 <span className="nav-item"><Link className="nav-link" to="/login">Login</Link></span>
             <span className="nav-item"><Link className="nav-link" to="/register">Register</Link></span>
@@ -46,10 +50,10 @@ const Navbar = () => {
 
             
       
-      {isAuthenticated && (
+      {user && (
         <>
         <span className={style.name}>
-        Hello,{username || firstName}!
+        Hello,{user.email}
       </span>
                 <Link to="/cart">
                 <button className="btn btn-outline-dark" type="submit">
@@ -58,7 +62,7 @@ const Navbar = () => {
                     <span className="badge bg-dark text-white ms-1 rounded-pill">{cartItem}</span>
                 </button>
                 </Link>
-                 <div className="nav-item"><Link className="nav-link" to="/logout">Logout</Link></div>
+                 <div className="nav-item"><Link className="nav-link" onClick={handleClick}>Logout</Link></div>
                  </>
       )}
             </div>

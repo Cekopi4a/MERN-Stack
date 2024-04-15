@@ -1,7 +1,8 @@
-import {Routes,Route, useNavigate} from 'react-router-dom'
+import { BrowserRouter, Routes,Route, Navigate} from 'react-router-dom'
 
-import {AuthProvider} from './context/authContext'
+import { useContext } from 'react';
 import {AddCartContext} from './context/cartContext'
+import { useAuthContext } from './hooks/useAuthContext';
 import Path from './path'
 
 
@@ -23,18 +24,21 @@ import ErrorBoundary from './Error/ErrorBoundarys'
 import RouteGuard from './routeguards/RouteGuard'
 
 
+
 function App() {
+
+  const {user} = useAuthContext()
 
   return (
     
     <div>
-      <AuthProvider>
+  
         <AddCartContext>
                <Navbar />
     <Routes>
       <Route path='*' element={<NoFound />} />
        <Route path={Path.Home} element={<Home />} />
-       <Route path='/login' element={<Login />} />
+       <Route path='/login' element={!user ? <Login /> : <Navigate to="/" />} />
        <Route path='/login/:queryParameters' element={<Login />} />
        <Route path='/register' element={<Register />} />
        <Route path='/shop' element={<Shop />} />
@@ -46,6 +50,7 @@ function App() {
        
 
        {/*Need to be login!*/}
+       
        <Route element={<RouteGuard />} >
        <Route path={Path.Logout} element={<Logout />} />
        <Route path='/admin' element={<Admin />} />
@@ -59,7 +64,7 @@ function App() {
 </Routes>
 <Footer />
 </AddCartContext>
-</AuthProvider>
+
     </div>
   )
 }

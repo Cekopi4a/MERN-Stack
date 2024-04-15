@@ -3,7 +3,7 @@ import { useState,useEffect } from "react";
 import * as itemService from '../service/itemService'
 import { useNavigate, useParams, } from "react-router-dom"; 
 import { useContext } from "react";
-import authContext from "./authContext";
+import {AuthContext} from "./AuthContext.jsx";
 
 
 const CartContext = createContext();

@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom"
 import { useContext } from "react";
 import CartContext from "../context/cartContext";
-import authContext from "../context/authContext";
+import {AuthContext} from '../context/AuthContext';
 
 
 const CartItem = ({
