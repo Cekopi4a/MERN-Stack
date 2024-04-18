@@ -6,13 +6,13 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useCartContext } from "../hooks/useCartContext";
 import * as itemService from '../service/itemService'
 
-const Cart = () => {
+const Order = () => {
     const {carts, dispatch} = useCartContext()
   const {user} = useAuthContext()
 
   useEffect(() => {
     const fetchCart = async () => {
-      const response = await fetch('http://localhost:5050/api/cart', {
+      const response = await fetch('http://localhost:5050/api/order', {
         headers: {'Authorization': `Bearer ${user.token}`},
       })
       const json = await response.json()
@@ -30,12 +30,8 @@ const Cart = () => {
     return(
         <>
         <h1>Cart Page</h1>
-<div className="row justify-content-evenly">
-    <div className="col-4">
-     
-    
         <div className="container px-4 px-lg-5 mt-5">
-                <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-1 justify-content-center">
+                <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
              {/*{itemCart.map((item)=>(
              <CartItem 
              addUserId={item.addUserId}
@@ -48,25 +44,17 @@ const Cart = () => {
              />
              ))}*/}
 
-
 {carts && carts.map((item) => (
           <CartItem   key={item._id} item={item} />
         ))}
          
                </div>
             </div>
-    </div>
-
-            <div className="col-4">
-  
-                 <div>
+                    <div>
                     <button  type="button" className="btn btn-outline-primary"><i className="bi bi-cart-check">Finish Order</i></button>
-                  </div>
-                  </div>
-  </div>
-                    
+                    </div>
         </>
     );
 };
 
-export default Cart;
+export default Order;

@@ -5,7 +5,6 @@ import style from './ShopItemDetails.module.css'
 import * as commentService from '../service/commentService'
 import * as itemService from '../service/itemService'
 import {AuthContext} from '../context/AuthContext';
-import CartContext from "../context/cartContext";
 import ShopItem from "./ShopItem";
 
 const ShopItemDetails = () =>{

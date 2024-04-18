@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express =require ('express');
 const cors =require ('cors');
 const mongoose = require ('mongoose');
@@ -13,6 +15,8 @@ const soup =require ('./routes/soup.js');
 const topping =require ('./routes/topping.js');
 const login =require ('./routes/login.js');
 const authRoute =require ('./routes/authRoute.js');
+const cartRoute = require('./routes/cart.js');
+
 
 
 
@@ -36,6 +40,9 @@ app.use("/soup", soup);
 app.use("/topping", topping);
 app.use("/login", login);
 app.use('/api/auth', authRoute);
+app.use('/api/cart', cartRoute)
+
+
 
 
 //Global Error Hnadler

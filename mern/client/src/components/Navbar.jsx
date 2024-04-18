@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom' 
 import {AuthContext} from '../context/AuthContext';
-import CartContext from '../context/cartContext';
 import style from './Navbar.module.css'
 import { useLogout } from '../hooks/useLogout'
 
@@ -11,7 +10,7 @@ const Navbar = () => {
     email,
    } = useContext(AuthContext);
 
-   const {cartItem} =useContext(CartContext);
+   
    const { logout } = useLogout()
 
    const handleClick = () => {
@@ -26,17 +25,8 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li className="nav-item"><Link className="nav-link active" aria-current="page" to="/">Home</Link></li>
+                <li className="nav-item"><Link className="nav-link active" aria-current="page" to="/shop">Shop</Link></li>
                
-                <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" id="navbarDropdown" href="/shop" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><Link className="dropdown-item" to="/shop">All Products</Link></li>
-                        {user && (
-                            <div> <li><hr className="dropdown-divider" /></li>
-                        <li><Link className="dropdown-item" to="/myItem">My Item</Link></li>
-                        </div>)}
-                    </ul>
-                </li> 
             </ul>
 
 
@@ -57,9 +47,9 @@ const Navbar = () => {
       </span>
                 <Link to="/cart">
                 <button className="btn btn-outline-dark" type="submit">
-                    <i className="bi-cart-fill me-1"></i>
+                    <i className="fa fa-shopping-bag me-2"></i>
                     Cart
-                    <span className="badge bg-dark text-white ms-1 rounded-pill">{cartItem}</span>
+                    <span className="badge bg-dark text-white ms-1 rounded-pill"></span>
                 </button>
                 </Link>
                  <div className="nav-item"><Link className="nav-link" onClick={handleClick}>Logout</Link></div>

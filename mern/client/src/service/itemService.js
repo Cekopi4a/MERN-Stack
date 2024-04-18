@@ -9,7 +9,7 @@ const  salad= 'http://localhost:5050/salad';
 const  soup= 'http://localhost:5050/soup';
 const  topping= 'http://localhost:5050/topping';
 
-const cartUrl = 'http://localhost:3030/data/cart';
+
 
 const token = localStorage.getItem('accessToken');
 
@@ -20,28 +20,24 @@ export const getAlc = async () =>{
 
     return data;
 };
-
 export const getAlcFree = async () =>{
     const response = await fetch(alcoholfree);
     const result = await response.json();
     const data = Object.values(result);
     return data;
 };
-
 export const getDess = async () =>{
     const response = await fetch(dessert);
     const result = await response.json();
     const data = Object.values(result);
     return data;
 };
-
 export const getGrill = async () =>{
     const response = await fetch(grill);
     const result = await response.json();
     const data = Object.values(result);
     return data;
 };
-
 export const getHlqb = async () =>{
     const response = await fetch(hlqb);
     const result = await response.json();
@@ -78,7 +74,6 @@ export const getTop = async () =>{
     const data = Object.values(result);
     return data;
 };
-
 export const getOne = async (id) =>{
     const response = await fetch(`${baseUrl}/${id}`);
   
@@ -132,7 +127,6 @@ export const deleteItem = async (id) => {
     return result;
 }
 
-
 export const getLatest = async () => {
     const query = new URLSearchParams({
         offset: 0,
@@ -152,20 +146,30 @@ export const getLatest = async () => {
 
 
 
-
-
-
+const cartUrl = 'http://localhost:5050/api';
 
 //////////////Cart Section/////////////////
 
-export const addCart = async ({id,brand,model,price,imageUrl,addUserId}) =>{
-    const response = await fetch(`${cartUrl}`,{
+export const addCart = async ({id,
+    name,
+    description,
+    weight,
+    volume,
+    price,
+    imageUrl,addUserId}) =>{
+    const response = await fetch(`${cartUrl}/addOrder`,{
         method: 'POST',
         headers:{
             "content-type": "application/json",
-            'X-Authorization': token,
+            'Authorization': `Bearer ${user.token}`
         },
-        body: JSON.stringify({id,brand,model,price,imageUrl,addUserId})
+        body: JSON.stringify({id,
+    name,
+    description,
+    weight,
+    volume,
+    price,
+    imageUrl,addUserId})
     });
 
     const result = await response.json();

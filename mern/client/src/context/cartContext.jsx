@@ -1,61 +1,34 @@
-import { createContext } from "react";
-import { useState,useEffect } from "react";
-import * as itemService from '../service/itemService'
-import { useNavigate, useParams, } from "react-router-dom"; 
-import { useContext } from "react";
-import {AuthContext} from "./AuthContext.jsx";
+import { createContext, useReducer } from 'react'
 
+export const CartContext = createContext()
 
-const CartContext = createContext();
-
-CartContext.displayName = 'CartContext';
-
-export const AddCartContext = ({
-    children,
-}) => {
-    const [cart,setCart] = useState([]);
-    const [cartItem,setCartItem] = useState(0);
-    const navigate = useNavigate();
-
-
-const addCart = async (id,brand,model,price,imageUrl,addUserId) => {
-
-    console.log(id,brand,model,price,imageUrl,addUserId);
-
-    const items = await itemService.addCart({id,brand,model,price,imageUrl,addUserId});
-
-    setCart(state => [...state, {items,author: { }}]);
-
-    console.log(items);
-
-    setCartItem(cartItem + 1);
-    navigate("/cart")
+export const CartReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_CART': 
+      return {
+       carts: action.payload
+      }
+    case 'CREATE_CART':
+      return {
+       carts: [action.payload, state.carts]
+      }
+    case 'DELETE_CART':
+      return {
+        carts: state.carts.filter((w) => w._id !== action.payload._id)
+      }
+    default:
+      return state
+  }
 }
 
-const removeItem = async (id) => {
+export const CartContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(CartReducer, {
+    carts: null
+  })
 
-    const items = await itemService.deleteCartItem(id);
-
-    setCart(state => [...state, {items}]);
-    console.log(items);
-
-    setCartItem(cartItem - 1);
-     navigate("/shop");
-}
-
-const values = {
-    setCartItem,
-    addCart,
-    removeItem,
-    cart,
-    cartItem,
-}
-
-    return(
-        <CartContext.Provider value={values}>
-        {children}
+  return (
+    <CartContext.Provider value={{...state, dispatch}}>
+      { children }
     </CartContext.Provider>
-    )
-};
-
-export default CartContext;
+  )
+}
