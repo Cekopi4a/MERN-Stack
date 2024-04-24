@@ -6,7 +6,7 @@ const {
   deleteCart,
   updateCart
 } = require('../controllers/cartController')
-const requireAuth = require('../middleware/requireAuth')
+const {requireAuth} = require('../middleware/requireAuth')
 
 const router = express.Router()
 

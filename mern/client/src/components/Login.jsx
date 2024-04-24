@@ -1,5 +1,5 @@
 import styles from './Login.module.css'
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { useLogin } from "../hooks/useLogin"
 import { useSearchParams } from 'react-router-dom';
 
@@ -9,6 +9,15 @@ const Login = () => {
   const {login, error, isLoading} = useLogin()
   const [queryParameters] = useSearchParams();
 
+  useEffect(() => {
+    (async () => {
+      try {
+        await login(queryParameters.get("email"), queryParameters.get("password"));
+      } catch (error) {
+        console.error('Error logging in:', error);
+      }
+    })();
+  }, []);
 
 
   const handleSubmit = async (e) => {
@@ -41,7 +50,7 @@ const Login = () => {
       />
         
         <button className={styles.login} disabled={isLoading}>Log in</button>
-      {error && <div className="error">{error}</div>}
+      {error && <div className={styles.error}>{error}</div>}
   </div>
 </form>
 

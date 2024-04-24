@@ -2,52 +2,64 @@ const mongoose = require("mongoose");
 // A
 const orderSchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    user_id: {
+      type: String,
+      required: true
     },
-    addressId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "UserAddress.address",
-      required: true,
-    },
-    totalAmount: {
+    subtotal: {
       type: Number,
-      required: true,
+      required: false,
     },
     items: [
       {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+        Product_id: {
+          type: String,
+          required: true
         },
-        payablePrice: {
-          type: Number,
-          required: true,
+        name: {
+          type: String,
+          required: true
         },
-        purchasedQty: {
+        description: {
+          type: String,
+          required: false
+        },
+        weight: {
+          type: String,
+          required: false
+        },
+        volume: {
+          type: String,
+          required: false
+        },
+        price: {
           type: Number,
-          required: true,
+          required: true
+        },
+        imageUrl: {
+          type: String,
+          required: true
         },
       },
     ],
     paymentStatus: {
       type: String,
       enum: ["pending", "completed", "cancelled", "refund"],
-      required: true,
+      default: "completed",
+      required: false,
     },
     paymentType: {
       type: String,
-      enum: ["cod", "card"],
-      required: true,
+      enum: ["Cash", "Card"],
+      default: "Cash",
+      required: false,
     },
     orderStatus: [
       {
         type: {
           type: String,
-          enum: ["ordered", "packed", "shipped", "delivered"],
-          default: "ordered",
+          enum: ["Ordered", "Accepted", "Complete"],
+          default: "Ordered",
         },
         date: {
           type: Date,

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 
-const requireAuth = async (req, res, next) => {
+exports.requireAuth = async (req, res, next) => {
   // verify user is authenticated
   const { authorization } = req.headers
 
@@ -23,4 +23,26 @@ const requireAuth = async (req, res, next) => {
   }
 }
 
-module.exports = requireAuth
+exports.userMiddleware = (req, res, next) => {
+  if (req.user.role !== "user") {
+    return res.status(400).json({ message: "User access denied" });
+  }
+  next();
+};
+
+exports.cookMiddleware = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    if (req.user.role !== "waiter") {
+      return res.status(400).json({ message: "Cook access denied" });
+    }
+  }
+  next();
+};
+
+exports.waiterMiddleware = (req, res, next) => {
+  if (req.user.role !== "waiter") {
+    return res.status(200).json({ message: "Waiter access denied" });
+  }
+  next();
+};
+

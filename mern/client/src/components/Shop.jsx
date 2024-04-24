@@ -83,17 +83,17 @@ function handleTopping() {
     <div className="container px-4 px-lg-5">
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1SupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
            <div className="collapse navbar-collapse" id="navbar1SupportedContent">
-             <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
- <button type="button" className="btn active" aria-pressed="true" onClick={handleAlc}>Алкохол</button>
- <button type="button" className="btn active" aria-pressed="true" onClick={handleAlcFree}>Безалкохолно</button>
-  <button type="button" className="btn active" aria-pressed="true" onClick={handleMain}>Основни ястия</button>
-  <button type="button" className="btn active" aria-pressed="true" onClick={handleHot}>Топли ястия</button>
-  <button type="button" className="btn active" aria-pressed="true" onClick={handleSal}>Салати</button>
-  <button type="button" className="btn active" aria-pressed="true" onClick={handleSoup}>Супи</button>
-  <button type="button" className="btn active" aria-pressed="true" onClick={handleGrill}>Грил</button>
-  <button type="button" className="btn active" aria-pressed="true" onClick={handleDess}>Десерти</button>
-  <button type="button" className="btn active" aria-pressed="true" onClick={handleHlqb}>Хляб</button>
-  <button type="button" className="btn active" aria-pressed="true" onClick={handleTopping}>Добавки</button>
+             <ul className="navbar-nav me-auto ms-lg-4">
+ <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleAlc}>Алкохол</button>
+ <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleAlcFree}>Безалкохолно</button>
+  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleMain}>Основни ястия</button>
+  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleHot}>Топли ястия</button>
+  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleSal}>Салати</button>
+  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleSoup}>Супи</button>
+  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleGrill}>Грил</button>
+  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleDess}>Десерти</button>
+  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleHlqb}>Хляб</button>
+  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleTopping}>Добавки</button>
   </ul>
 </div>
 </div>
@@ -105,7 +105,7 @@ function handleTopping() {
 </div>
 
 <div className="container px-4 px-lg-5 mt-5">
-                <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <div className="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-4 justify-content-center">
                 
 
                 {items.map((item)=>(
