@@ -25,6 +25,7 @@ import EditItem from './components/EditItem'
 import ErrorBoundary from './Error/ErrorBoundarys'
 import RouteGuard from './routeguards/RouteGuard'
 import DashBoard from "./components/DashBoard/DashBoard"
+import CardPaymentForm from './components/Payment/CardPaymentForm'
 
 
 
@@ -81,6 +82,7 @@ function App() {
        <Route path='/myItem' element={<UsersItems/>} />
        <Route path='/edit/:id' element={<EditItem/>} />
        <Route path='/cart' element={<Cart/>} />
+       <Route path='/card' element={<CardPaymentForm/>} />
        <Route path='/checkout' element={<Checkout/>} />
        <Route path='/cart/:id' element={<Cart/>} />
        </Route>

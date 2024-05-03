@@ -10,92 +10,12 @@ import * as itemService from '../service/itemService'
 const Cart = () => {
   // const {carts, dispatch} = useCartContext()
   const {user} = useAuthContext()
-  const { cartItems, addToCart, removeFromCart } = useCartContext();
+  const { cartItems, addToCart, removeFromCart,totalItems } = useCartContext();
 
   const [item, setItem] = useState({})
   const [error, setError] = useState(null)
 
-  // useEffect(() => {
-  //   const fetchCart = async () => {
-  //     const response = await fetch('http://localhost:5050/api/cart', {
-  //       headers: {'Authorization': `Bearer ${user.token}`},
-  //     })
-  //     const json = await response.json()
-
-  //     if (response.ok) {
-  //       dispatch({type: 'SET_CART', payload: json})
-  //     }
-  //   }
-
-  //   if (user) {
-  //     fetchCart()
-  //   }
-  // }, [dispatch, user])
-
   
-  // const Checkout = ({ carts, handleCheckout }) => {
-  //   const totalPrice = carts.reduce((total, item) => total + carts.price, 0);
-  // };
-
-
-//   const handleClick = async () => {
-//     if (!user) {
-//       return
-//     }
-
-//     const response = await fetch('http://localhost:5050/api/cart/' + item._id, {
-//       method: 'DELETE',
-//       headers: {
-//         'Authorization': `Bearer ${user.token}`
-//       }
-//     })
-//     const json = await response.json()
-// console.log(json);
-//     if (response.ok) {
-//       dispatch({type: 'DELETE_CART', payload: json})
-//     }
-//   }
-
-  // const handleSubmit = async () => {
-
-  //   if (!user) {
-  //       setError('You must be logged in')
-  //       return
-  //     }
-  
-  //     const cart = {id,
-  //       name,
-  //       description,
-  //       weight,
-  //       volume,
-  //       price,
-  //       imageUrl}
-  //       console.log(cart);
-  //       console.log(user.token);
-  //     const response = await fetch('http://localhost:5050/api/cart', {
-  //       method: 'POST',
-  //       body: JSON.stringify(cart),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${user.token}`
-  //       }
-  //     })
-  //     const json = await response.json()
-
-  //     console.log(json);
-  //     if (!response.ok) {
-  //       setError(json.error)
-  //     }
-  //     if (response.ok) {
-  //       setItem('')
-  //       setError(null)
-  //       dispatch({type: 'CREATE_CART', payload: json})
-  //     }
-
-  //  }
-
-  
- 
 
   const EmptyCart = () => {
    return (
@@ -117,6 +37,7 @@ const Cart = () => {
 const ShowCart = () => {
   let subtotal = 0;
   let totalItems = 0;
+
   cartItems.map((item) => {
     return (subtotal += item.price * item.quantity);
   });

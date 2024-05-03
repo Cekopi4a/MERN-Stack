@@ -1,6 +1,7 @@
 require('dotenv').config()
-
 const express =require ('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors =require ('cors');
 const mongoose = require ('mongoose');
 const records =require ('./routes/record.js');
@@ -17,6 +18,7 @@ const login =require ('./routes/login.js');
 const authRoute =require ('./routes/authRoute.js');
 const cartRoute = require('./routes/cart.js');
 const orderRoute = require("./routes/orderRoute");
+const callRoute = require("./routes/callRoute");
 
 
 
@@ -29,6 +31,8 @@ app.use(cors());
 //Routes
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(cookieParser());
 app.use("/alcohol", records);
 app.use("/alcfree", alcoholfree);
 app.use("/dessert", dessert );
@@ -43,6 +47,7 @@ app.use("/login", login);
 app.use('/api/auth', authRoute);
 app.use('/api/cart', cartRoute);
 app.use('/api/order', orderRoute);
+app.use('/api/call', callRoute);
 
 
 

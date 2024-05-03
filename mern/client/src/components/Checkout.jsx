@@ -1,23 +1,75 @@
 import { useParams,Link } from "react-router-dom"; 
 import { useContext } from "react";
 import { useState,useEffect } from "react";
+import Swal from 'sweetalert2';
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useCartContext } from "../hooks/useCartContext";
 import * as itemService from '../service/itemService'
 import {useOrderContext} from "../hooks/useOrderContext";
+import CardPaymentForm from "./Payment/CardPaymentForm"
+import { createRoot } from 'react-dom/client';
 
-const Checkout = (subtotal) => {
+const Checkout = () => {
   const { cartItems, removeFromCart } = useCartContext();
-  const {orderItems,addOrder} = useOrderContext();
+  // const {orderItems,addOrder} = useOrderContext();
   const {user} = useAuthContext()
+  const [selectedPaymentType, setSelectedPaymentType] = useState('');
+  const [showCardForm, setShowCardForm] = useState(false);
 
- 
 
-  const Checkout = async () => {
+  const handleRadioChange = (e) => {
+  
+    const selectedValue = e.target.value;
+    setSelectedPaymentType(selectedValue);
 
+    if (selectedValue === 'Card') {
+      setShowCardForm(true);
+      Swal.fire({
+        title: 'Enter Card Details',
+        html: '<div id="cardPaymentForm"></div>',
+        showCancelButton: true,
+        showConfirmButton: false,
+        cancelButtonText: 'Close',
+        didOpen: () => {
+          renderCardPaymentForm();
+        },
+        willClose: () => {
+          setShowCardForm(false);
+        }
+      });
+    } else {
+      setShowCardForm(false);
+    }
+  };
+
+  const renderCardPaymentForm = () => {
+    const cardPaymentContainer = document.getElementById('cardPaymentForm');
+    if (cardPaymentContainer) {
+      createRoot(cardPaymentContainer).render(<CardPaymentForm onComplete={handleCardPaymentComplete} />);
+    }
+  };
+
+  const handleCardPaymentComplete = () => {
+    Swal.close();
+    // Допълнителна логика след успешно плащане
+  };
+
+  const handleCheckout = async (paymentType,subtotal) => {
+
+    let orderItems = JSON.parse(localStorage.getItem('cartItems'));
+
+console.log(orderItems);
+  const orderData ={
+    orderItems: orderItems,
+    paymentType: selectedPaymentType,
+    subtotal: subtotal,
+    userTable: user.table,
+  };
+    
+console.log(orderData);
     const response = await fetch('http://localhost:5050/api/order/addOrder', {
           method: 'POST',
-          body: JSON.stringify(orderItems),
+          body: JSON.stringify(orderData),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.token}`
@@ -30,25 +82,18 @@ const Checkout = (subtotal) => {
           console.log("Error");
         }
         if (response.ok) {
+          Swal.fire({
+            position: "top",
+            icon: "success",
+            title: "Your order has been placed successfully!",
+            showConfirmButton: false,
+            timer: 1850
+          });
           console.log("Success") ;
    }
 }
-            
 
-// let storedObject = JSON.parse(localStorage.getItem('cartItems'));
 
-// // Проверка дали има такъв обект
-// if (storedObject) {
-//     // Добавяне на нов параметър към обекта
-//     storedObject.paymentType = "Cash";
-
-//     // Запазване на обновения обект в localStorage
-//     localStorage.setItem('myObject', JSON.stringify(storedObject));
-
-//     console.log('Обектът беше успешно актуализиран в localStorage.');
-// } else {
-//     console.log('Не може да се намери съществуващ обект в localStorage.');
-// }
 
   const ShowCart = () => {
     let subtotal = 0;
@@ -159,36 +204,30 @@ const Checkout = (subtotal) => {
           {/* Radio Button 1 */}
           <label className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
             <span>Cash</span>
-            <input type="radio" name="radioButton" className="ms-2" aria-label="Radio button for following text input"/>
+            <input type="radio" onChange={handleRadioChange} checked={selectedPaymentType === "Cash"} value={"Cash"} name="radioButton" className="ms-2" aria-label="Radio button for following text input"/>
           </label>
 
           {/* Radio Button 2 */}
           <label className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-            <span>Cart</span>
-            <input type="radio" name="radioButton" className="ms-2" aria-label="Radio button for following text input"/>
+            <span>Card</span>
+            <input type="radio" onChange={handleRadioChange} checked={selectedPaymentType === "Card"}  value={"Card"} name="radioButton" className="ms-2" aria-label="Radio button for following text input"/>
           </label>
 
           {/* Radio Button 3 */}
           <label className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-            <span>With cart on spot</span>
-            <input type="radio" name="radioButton" className="ms-2" aria-label="Radio button for following text input"/>
+            <span>With card on spot</span>
+            <input type="radio" onChange={handleRadioChange} checked={selectedPaymentType === "Card on spot"}  value={"Card on spot"} name="radioButton" className="ms-2" aria-label="Radio button for following text input"/>
           </label>
         </div>
       </div>
     </div>
 
-    <button
-                  to="/checkout"
-                  className="btn btn-dark btn-lg btn-block"
-                  onClick={() => addOrder('card',subtotal)}
-                >
-                  Add to Local
-                </button>
 
                 <button
                   to="/checkout"
                   className="btn btn-dark btn-lg btn-block"
-                  onClick={() => Checkout()}
+                  disabled={!selectedPaymentType}
+                  onClick={() => handleCheckout(selectedPaymentType,subtotal)}
                 >
                   Order
                 </button>
@@ -198,7 +237,6 @@ const Checkout = (subtotal) => {
         </div>
       </div>
     </section>
-              
     </>
 )
 }
@@ -209,4 +247,5 @@ return(
   </>
 )
 }
+
 export default Checkout;

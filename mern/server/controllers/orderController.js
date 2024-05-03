@@ -1,53 +1,24 @@
 const Order = require("../models/order");
 const Cart = require("../models/cart");
 
-
 const addOrder = async (req, res) => {
-  // Order.create({ user: req.user._id }).exec((error, result) => {
-  //   if (error) return res.status(400).json({ error });
-  //   if (result) {
-  //     req.body.user = req.user._id;
-  //     req.body.orderStatus = [
-  //       {
-  //         type: "ordered",
-  //         date: new Date(),
-  //         isCompleted: true,
-  //       },
-  //       {
-  //         type: "packed",
-  //         isCompleted: false,
-  //       },
-  //       {
-  //         type: "shipped",
-  //         isCompleted: false,
-  //       },
-  //       {
-  //         type: "delivered",
-  //         isCompleted: false,
-  //       },
-  //     ];
-  //     const order = new Order(req.body);
-  //     order.save((error, order) => {
-  //       if (error) return res.status(400).json({ error });
-  //       if (order) {
-  //         res.status(201).json({ order });
-  //       }
-  //     });
-  //   }
-  // });
+  try {
+    const { orderItems, paymentType, subtotal, userTable } = req.body;
+    const user_id = req.user._id;
+    console.log('User ID from cookie:', user_id);
+    console.log(userTable);
+    
 
-    const {orderItems} = req.body
-  
-  
-    // add doc to db
-    try {
-      const user_id = req.user._id
-      const Orders = await Order.create({orderItems,user_id})
-      res.status(200).json(Orders)
-    } catch (error) {
-      res.status(400).json({error: error.message})
-    }
-  };
+    const order = new Order({ orderItems, paymentType, subtotal, user_id,userTable });
+    const savedOrder = await order.save();
+
+    // Вместо да върнете целия обект, върнете само нужната информация (например, идентификатора на поръчката)
+    res.status(200).json({ order });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 
 const getOrders = (req, res) => {
   Order.find({ user: req.user._id })

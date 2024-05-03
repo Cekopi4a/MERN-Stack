@@ -3,17 +3,130 @@ import UsersItems from "./UsersItems";
 import { Link } from "react-router-dom";
 import ShopItem from "./ShopItem";
 import { useState,useEffect } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 import * as itemService from '../service/itemService'
-
+import { useLogout } from '../hooks/useLogout';
+import Swal from 'sweetalert2';
 
 
 const Home = () => {
   const [latItem, setLatItem] = useState([]);
+  const {user} = useAuthContext();
+  const { logout } = useLogout();
+  const [message, setMessage] = useState('');
+  const [locationValid, setLocationValid] = useState(false);
 
   useEffect(() => {
     itemService.getLatest()
         .then(result => setLatItem(result));
 }, [])
+
+const callWaiter = async () => {
+
+  const userTable = user.table;
+  console.log(userTable);
+  console.log(user.token);
+  const response = await fetch('http://localhost:5050/api/call/callClient', {
+    method: 'POST',
+    body: JSON.stringify(userTable),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user.token}`
+    }
+  })
+  const json = await response.json()
+
+  console.log(json);
+  if (!response.ok) {
+    console.log("Error");
+  }
+  if (response.ok) {
+    Swal.fire({
+      position: "top",
+      icon: "success",
+      title: "Your order has been placed successfully!",
+      showConfirmButton: false,
+      timer: 1850
+    });
+    console.log("Success") ;
+}
+}
+
+
+
+  const isInBounds = (lat, long) => {
+    // Примерни граници за София
+    const minLat = 42.43;
+    const maxLat = 42.75;
+    const minLong = 25.18;
+    const maxLong = 26.68;
+    return lat >= minLat && lat <= maxLat && long >= minLong && long <= maxLong;
+};
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const locationValid = await checkLocation();
+      if (locationValid) {
+        setLocationValid(true);
+        setMessage('Вие сте в правилната локация.');
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "You are at the right place!",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      } else {
+        Swal.fire({
+          title: "Вие не сте в правилната локация!",
+          text: "Мислите ли, че има проблем?",
+          icon: "error",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Извикай сервитьор!"
+        }).then((result) => {
+          logout();
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Обработка на заявката!",
+              text: "Сервитьорът идва!",
+              icon: "success"
+            }).then(() => {
+              callWaiter();
+              logout();
+            });
+          }
+        });
+      }
+    } catch (error) {
+      logout();
+      console.error('Грешка при проверката на локацията:', error.message);
+    }
+  };
+
+  fetchData();
+}, [locationValid]);
+
+
+
+  const checkLocation = () => {
+    return new Promise((resolve, reject) => {
+      if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition((position) => {
+              const { latitude, longitude } = position.coords;
+              // Тук проверяваме локацията спрямо границите
+              const locationValid = isInBounds(latitude, longitude);
+              console.log(position.coords);
+              resolve(locationValid);
+          }, (error) => {
+              reject(new Error(`Грешка при извличане на локацията: ${error.message}`));
+          });
+      } else {
+          reject(new Error('Геолокацията не е поддържана от вашия браузър.'));
+      }
+  });
+};
+
   return(
     <>
   <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">

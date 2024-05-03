@@ -19,12 +19,16 @@ exports.requireAuth = async (req, res, next) => {
 
   } catch (error) {
     console.log(error)
+    res.clearCookie("user");
     res.status(401).json({error: 'Request is not authorized'})
   }
 }
 
-exports.userMiddleware = (req, res, next) => {
-  if (req.user.role !== "user") {
+exports.userMiddleware = async (req, res, next) => {
+
+  console.log(req.headers.role);
+  
+  if (req.headers.role !== "user") {
     return res.status(400).json({ message: "User access denied" });
   }
   next();

@@ -4,12 +4,13 @@ import {AuthContext} from '../context/AuthContext';
 import style from './Navbar.module.css'
 import { useLogout } from '../hooks/useLogout'
 import { CartContext } from '../context/CartContext';
+import { useCartContext } from "../hooks/useCartContext";
 
 const Navbar = () => {
    const {
     user,email } = useContext(AuthContext);
+    const { totalItems } = useCartContext();
 
-    const {} = useContext(CartContext);
 
    
    const { logout } = useLogout()
@@ -59,7 +60,7 @@ const Navbar = () => {
                 className="absolute top-[-15px] right-[-10px] bg-red-600 w-[25px] h-[25px] rounded-full text-white text-[14px] grid place-items-center"></div>
                     <i className="fa fa-shopping-bag me-2"></i>
                     Cart
-                    <span className="badge bg-dark text-white ms-1 rounded-pill"></span>
+                    <span className="badge bg-dark text-white ms-1 rounded-pill">{totalItems}</span>
                 </button>
                 </Link>
                  <div className="nav-item"><Link className="nav-link" onClick={handleClick}>Logout</Link></div>

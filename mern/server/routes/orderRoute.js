@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.use(requireAuth);
 
-router.post("/addOrder", addOrder);
+router.post("/addOrder", userMiddleware, addOrder);
 router.get("/getOrders", userMiddleware, getOrders);
 router.post("/getOrder", userMiddleware, getOrder);
 
