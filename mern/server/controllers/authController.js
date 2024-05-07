@@ -1,8 +1,12 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 
-const createToken = (_id) => {
-  return jwt.sign({_id}, process.env.SECRET, { expiresIn: '20m' })
+const createToken = (_id,role) => {
+  let expiresIn = '20m'; // По подразбиране за клиенти
+  if (role === 'admin') {
+    expiresIn = '10h'; // За сервитьори - по-дълго време на живот
+  }
+  return jwt.sign({_id}, process.env.SECRET, { expiresIn: expiresIn })
 }
 
 // login a user

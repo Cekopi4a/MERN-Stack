@@ -132,13 +132,13 @@ useEffect(() => {
   <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
   <div className="carousel-inner">
     <div className="carousel-item active" data-bs-interval="5000">
-      <img src="./assets/photo/car11.jpg" className="d-block w-100" alt="..."/>
+      <img src="https://www.restolacuisine.com/restaurants/restaurant-la-cuisine/website/images/Lacuisine_resto.jpg" style={{height: "780px"}} className="d-block w-100" alt="..."/>
     </div>
     <div className="carousel-item" data-bs-interval="2000">
-      <img src="./assets/photo/car2.jpg" className="d-block w-100" alt="..."/>
+      <img src="https://cdn.britannica.com/02/239402-050-ACC075DB/plates-of-vegan-foods-ready-serve-restaurant-London.jpg" style={{height: "780px"}} className="d-block w-100" alt="..."/>
     </div>
     <div className="carousel-item">
-      <img src="./assets/photo/car3.jpg" className="d-block w-100" alt="..."/>
+      <img src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/03/13/14/root-bristol-1.jpg" style={{height: "780px"}} className="d-block w-100" alt="..."/>
     </div>
   </div>
   <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
@@ -167,10 +167,10 @@ useEffect(() => {
 
 <div className="container px-4 px-lg-5 mt-5">
 <div className="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-    {latItem.map(item => <ShopItem 
+    {/* {latItem.map(item => <ShopItem 
     key={item.id}
     id={item._id}
-    {...item} />)}
+    {...item} />)} */}
     </div>
     </div>
 

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors =require ('cors');
 const mongoose = require ('mongoose');
+const WebSocket = require('ws');
 const records =require ('./routes/record.js');
 const alcoholfree =require ('./routes/alcoholfree.js');
 const dessert =require ('./routes/dessert.js');
@@ -21,6 +22,24 @@ const orderRoute = require("./routes/orderRoute");
 const callRoute = require("./routes/callRoute");
 
 
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on('connection', function connection(ws) {
+  console.log('Нова връзка установена.');
+
+  ws.on('message', function incoming(message) {
+    console.log('Получено съобщение от клиент:', message.toString('utf8'));
+
+    // Пример: изпращане на съобщение до всички свързани клиенти
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(`Извикаха ви от маса, ${message}`);
+      }
+    });
+  });
+});
+
+console.log('WebSocket сървър стартиран на порт 8080');
 
 
 const PORT = process.env.PORT || 5050;

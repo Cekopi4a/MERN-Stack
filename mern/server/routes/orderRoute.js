@@ -6,8 +6,8 @@ const router = express.Router()
 
 router.use(requireAuth);
 
-router.post("/addOrder", userMiddleware, addOrder);
-router.get("/getOrders", userMiddleware, getOrders);
+router.post("/addOrder",  addOrder);
+router.get("/getOrders",  getOrders);
 router.post("/getOrder", userMiddleware, getOrder);
 
 module.exports = router;

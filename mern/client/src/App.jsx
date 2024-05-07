@@ -25,6 +25,7 @@ import EditItem from './components/EditItem'
 import ErrorBoundary from './Error/ErrorBoundarys'
 import RouteGuard from './routeguards/RouteGuard'
 import DashBoard from "./components/DashBoard/DashBoard"
+import AllOrder from "./components/DashBoard/AllOrder"
 import CardPaymentForm from './components/Payment/CardPaymentForm'
 
 
@@ -77,6 +78,7 @@ function App() {
        <Route element={<RouteGuard />} >
        <Route path={Path.Logout} element={<Logout />} />
        <Route path='/dashboard' element={<DashBoard />} />
+       <Route path='/dashboard/allOrder' element={<AllOrder />} />
        <Route path='/admin' element={<Admin />} />
        <Route path="/shop/item/:id" element={<ShopItemDetails />} />
        <Route path='/myItem' element={<UsersItems/>} />

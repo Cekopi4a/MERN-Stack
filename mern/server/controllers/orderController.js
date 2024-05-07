@@ -20,16 +20,26 @@ const addOrder = async (req, res) => {
 };
 
 
-const getOrders = (req, res) => {
-  Order.find({ user: req.user._id })
-    .select("_id paymentStatus paymentType orderStatus items")
-    .populate("items.productId", "_id name productPictures")
-    .exec((error, orders) => {
-      if (error) return res.status(400).json({ error });
-      if (orders) {
-        res.status(200).json({ orders });
+const getOrders = async (req, res) => {
+  try {
+    // Вземаме всички поръчки от базата данни
+    const orders = await Order.find();
+
+    // Групираме поръчките по клиент
+    const ordersByClient = {};
+    orders.forEach(order => {
+      if (!ordersByClient[order.user_id]) {
+        ordersByClient[order.user_id] = [order];
+      } else {
+        ordersByClient[order.user_id].push(order);
       }
     });
+
+    res.status(200).json({ ordersByClient });
+  } catch (err) {
+    console.error('Грешка при извличане на поръчки:', err);
+    res.status(500).json({ error: 'Възникна грешка при извличане на поръчките' });
+  }
 };
 
 const getOrder = (req, res) => {

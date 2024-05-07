@@ -25,59 +25,7 @@ const ShopItem = ({
         volume,
         price,
         imageUrl};
-
-      //  const navigate = useNavigate();
-      //  const location = useLocation();
-
-      // const handleSubmit = async () => {
-
-      //   if (!user) {
-      //       setError('You must be logged in')
-      //       return
-      //     }
-
-      //     const cart = {id,
-      //       name,
-      //       description,
-      //       weight,
-      //       volume,
-      //       price,
-      //       imageUrl}
-      //       console.log(cart);
-      //       console.log(user.token);
-
-      //     const response = await fetch('http://localhost:5050/api/cart', {
-      //       method: 'POST',
-      //       body: JSON.stringify(cart),
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         'Authorization': `Bearer ${user.token}`
-      //       }
-      //     })
-      //     const json = await response.json()
-
-      //     console.log(json);
-      //     if (!response.ok) {
-      //       setError(json.error)
-      //       setEmptyFields(json.emptyFields)
-      //     }
-      //     if (response.ok) {
-      //       setItem('')
-      //       setError(null)
-      //       setEmptyFields([])
-      //       dispatch({type: 'CREATE_CART', payload: json})
-      //       Swal.fire({
-      //         position: 'center',
-      //         icon: 'success',
-      //         title: 'Food added on the cart.',
-      //         showConfirmButton: false,
-      //         timer: 1500
-      //       })
-      //     }
-          
-      //   }
-      
-//    
+ 
 return (
     <div className={`col mb-5 ${viewType === 'list' ? 'mt-3' : ''}`}>
         <div className={`card h-100 ${viewType === 'list' ? 'border' : ''}`}>
@@ -94,19 +42,21 @@ return (
                         </div>
                     </div>
                     {!user && (
-                        <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div className="card-footer p-4 pt-0 border-top-0 bg-transparent" >
                             <div className="container text-center">
+                            <div className="fixed-bottom">
                                 <Link to='/login'>
                                     <button type="button" className="btn btn-outline-primary">
                                         Login to make order!
                                     </button>
                                 </Link>
+                                </div>
                             </div>
                         </div>
                     )}
                     {user && (
                       <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                      <div className="container text-center">
+                      <div className="container text-center" >
                                 <button onClick={() => addToCart(cart, Swal.fire({
                                     position: 'center',
                                     icon: 'success',

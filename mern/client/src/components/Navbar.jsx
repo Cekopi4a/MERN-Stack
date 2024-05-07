@@ -6,6 +6,7 @@ import { useLogout } from '../hooks/useLogout'
 import { CartContext } from '../context/CartContext';
 import { useCartContext } from "../hooks/useCartContext";
 
+
 const Navbar = () => {
    const {
     user,email } = useContext(AuthContext);
@@ -19,6 +20,15 @@ const Navbar = () => {
     logout()
   }
 
+  const socket = new WebSocket('ws://localhost:8080');
+
+// При натискане на копче "Извикай сервитьор"
+function callWaiter() {
+  const message = (user.table);
+  console.log(message);
+  socket.send(message); // Променете съобщението според вашите нужди
+}
+
   return(
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
     <div className="container px-4 px-lg-5">
@@ -30,6 +40,7 @@ const Navbar = () => {
                 <li className="nav-item"><Link className="nav-link active" aria-current="page" to="/shop">Shop</Link></li>
                 {user && (
                   <>
+                  <li className="nav-item"><Link className="nav-link active" aria-current="page" onClick={callWaiter} >Call Waiter!</Link></li>
                 {user.role == "admin" && (
                 <li className="nav-item"><Link className="nav-link active" aria-current="page" to="/dashboard">DashBoard</Link></li>
               )}

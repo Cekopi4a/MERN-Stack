@@ -1,27 +1,33 @@
-import { useEffect } from "react";
+import { useState,useEffect } from "react";
+import { Link } from 'react-router-dom' 
 import { useContext } from 'react';
 import {AuthContext} from './../../context/AuthContext';
+import AllOrder from "./AllOrder";
+import Swal from 'sweetalert2';
+import { client } from './waiterClient'; 
 
 
 const DashBoard = () => {
   const { user } = useContext(AuthContext);
+  const [message, setMessage] = useState([]);
+
+
 
   useEffect(() => {
-      const fetchCart = async () => {
-        const response = await fetch('http://localhost:5050/api/order/getOrders', {
-          headers: {'Authorization': `Bearer ${user.token}`},
-        })
-        const json = await response.json()
-  
-        if (response.ok) {
-          dispatch({type: 'SET_CART', payload: json})
-        }
+    client.onmessage = function(e) {
+      if (typeof e.data === 'string') {
+        setMessage(e.data);
+        Swal.fire(message);
       }
+    };
+    
+    return () => {
+      client.onmessage = null;
+    };
+
+  }, [message]);
   
-      if (user) {
-        fetchCart()
-      }
-    }, [user])
+
 
 
 return(
@@ -92,10 +98,10 @@ return(
       {/* Nav Item - Utilities Collapse Menu */}
       <li className="nav-item">
       <li className="nav-item">
-        <a className="nav-link" href="tables.html">
+        <Link className="nav-link" to="">
           <i className="fas fa-fw fa-table" />
           <span>Orders</span>
-        </a>
+        </Link>
       </li>
       <li className="nav-item">
         <a className="nav-link" href="tables.html">
@@ -318,10 +324,12 @@ return(
               </div>
             </div>
           </div>
+
+       <AllOrder />
          
          
 
-
+        
 
 
 

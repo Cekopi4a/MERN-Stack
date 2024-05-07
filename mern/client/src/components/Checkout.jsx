@@ -182,7 +182,7 @@ console.log(orderData);
               <div className="card-body">
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                    Products ({totalItems})<span>{subtotal}лв.</span>
+                    Products ({totalItems})<span>{subtotal.toFixed(2)}лв.</span>
                   </li>
                  
                   <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
@@ -190,7 +190,7 @@ console.log(orderData);
                       <strong>Total amount</strong>
                     </div>
                     <span>
-                      <strong>{subtotal}лв.</strong>
+                      <strong>{subtotal.toFixed(2)}лв.</strong>
                     </span>
                   </li>
                 </ul>
