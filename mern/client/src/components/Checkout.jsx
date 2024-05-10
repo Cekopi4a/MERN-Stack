@@ -8,11 +8,12 @@ import * as itemService from '../service/itemService'
 import {useOrderContext} from "../hooks/useOrderContext";
 import CardPaymentForm from "./Payment/CardPaymentForm"
 import { createRoot } from 'react-dom/client';
+import { useLogout } from '../hooks/useLogout'
 
 const Checkout = () => {
   const { cartItems, removeFromCart } = useCartContext();
-  // const {orderItems,addOrder} = useOrderContext();
   const {user} = useAuthContext()
+  const { logout } = useLogout()
   const [selectedPaymentType, setSelectedPaymentType] = useState('');
   const [showCardForm, setShowCardForm] = useState(false);
 
@@ -79,6 +80,14 @@ console.log(orderData);
 
         console.log(json);
         if (!response.ok) {
+          Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "Your time is up. Sign in again.",
+            showConfirmButton: false,
+            timer: 3000
+          });
+          logout();
           console.log("Error");
         }
         if (response.ok) {
@@ -87,9 +96,10 @@ console.log(orderData);
             icon: "success",
             title: "Your order has been placed successfully!",
             showConfirmButton: false,
-            timer: 1850
+            timer: 5000
           });
           console.log("Success") ;
+          logout();
    }
 }
 

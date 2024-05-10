@@ -37,7 +37,7 @@ return (
                     <div className="card-body p-4">
                         <div className={`text-${viewType === 'list' ? 'start' : 'center'}`}>
                             <h5 className="fw-bolder">{name}</h5>
-                            {price}лв.- {weight} {volume}.
+                            {price} лв.- {weight} {volume}.
                             <p><br />{description}</p>
                         </div>
                     </div>

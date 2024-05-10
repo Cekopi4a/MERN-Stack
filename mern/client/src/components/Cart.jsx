@@ -1,7 +1,6 @@
 import { useParams,Link } from "react-router-dom"; 
 import { useContext } from "react";
 import { useState,useEffect } from "react";
-import CartItem_upr from "./CartItem_upr";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useCartContext } from "../hooks/useCartContext";
 import * as itemService from '../service/itemService'
@@ -19,7 +18,7 @@ const Cart = () => {
 
   const EmptyCart = () => {
    return (
-     <div className="container">
+     <div className="container" style={{ minHeight: "100vh" }}>
        <div className="row">
          <div className="col-md-12 py-5 bg-light text-center">
            <h4 className="p-3 display-5">Your Cart is Empty</h4>

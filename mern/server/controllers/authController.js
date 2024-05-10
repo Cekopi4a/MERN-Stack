@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 
 const createToken = (_id,role) => {
   let expiresIn = '20m'; // По подразбиране за клиенти
-  if (role === 'admin') {
+  if (role === 'admin' || role =="waiter") {
     expiresIn = '10h'; // За сервитьори - по-дълго време на живот
   }
   return jwt.sign({_id}, process.env.SECRET, { expiresIn: expiresIn })
@@ -17,12 +17,13 @@ const loginUser = async (req, res) => {
     const user = await User.login(email, password)
      console.log(user);
         // create a token
-    const token = createToken(user._id)
+    const token = createToken(user._id,user.role)
 
     res.status(200).json({email, token,
       
       table: user.table,
       role: user.role,
+      isBlocked: user.isBlocked,
   })
   } catch (error) {
     res.status(400).json({error: error.message})

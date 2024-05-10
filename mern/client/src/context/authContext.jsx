@@ -8,7 +8,7 @@ export const authReducer = (state, action) => {
     case 'LOGIN':
       return { user: action.payload }
     case 'LOGOUT':
-      return { user: null }
+      return document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
     default:
       return state
   }

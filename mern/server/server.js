@@ -20,6 +20,7 @@ const authRoute =require ('./routes/authRoute.js');
 const cartRoute = require('./routes/cart.js');
 const orderRoute = require("./routes/orderRoute");
 const callRoute = require("./routes/callRoute");
+const userRoute = require("./routes/userRoute");
 
 
 const wss = new WebSocket.Server({ port: 8080 });
@@ -28,7 +29,7 @@ wss.on('connection', function connection(ws) {
   console.log('Нова връзка установена.');
 
   ws.on('message', function incoming(message) {
-    console.log('Получено съобщение от клиент:', message.toString('utf8'));
+    console.log('Получено съобщение от маса:', message.toString('utf8'));
 
     // Пример: изпращане на съобщение до всички свързани клиенти
     wss.clients.forEach(function each(client) {
@@ -67,6 +68,7 @@ app.use('/api/auth', authRoute);
 app.use('/api/cart', cartRoute);
 app.use('/api/order', orderRoute);
 app.use('/api/call', callRoute);
+app.use('/api/users', userRoute);
 
 
 

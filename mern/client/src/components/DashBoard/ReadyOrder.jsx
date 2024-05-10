@@ -3,14 +3,14 @@ import Swal from 'sweetalert2';
 import { useState,useEffect } from 'react';
 import {useAuthContext} from '../../hooks/useAuthContext';
 
-const AllOrder = () => {
+const ReadyOrder = () => {
     const [orders,setOrders] = useState([]);
     const { user } = useAuthContext();
     
     useEffect(() => {
         const fetchOrders = async () => {
           try {
-            const response = await fetch(`http://localhost:5050/api/order/getNewOrder`, {
+            const response = await fetch(`http://localhost:5050/api/order/getReadyOrders`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -42,25 +42,26 @@ const AllOrder = () => {
 
 
 
-    const handleApprove = async (orderId) => {
-      console.log(orderId);
+    const handleApprove = async () => {
+      const orderId = order._id;
         try {
-      const response = await fetch(`http://localhost:5050/api/order/approveOrder/${orderId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
+          const response = await fetch(`http://localhost:5050/api/order/getNewOrder/${orderId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.token}`
+            },
+          });
+          if (!response.ok) {
+            throw new Error('Неуспешна заявка за поръчки');
+          }
+          const json = await response.json();
+        alert('Order approved successfully!');
+      } catch (error) {
+        console.error('Error approving order:', error);
+        alert('Error approving order. Please try again.');
       }
-    });
-    if (!response.ok) {
-      throw new Error('Неуспешна заявка за одобряване на поръчка');
-    }
-    alert('Поръчката беше успешно одобрена!');
-  } catch (error) {
-    console.error('Грешка при одобряване на поръчка:', error);
-    alert('Грешка при одобряване на поръчка. Моля, опитайте отново.');
-  }
-};
+    };
 
 
 return (
@@ -129,7 +130,7 @@ return (
                </div>  
               ))}
             </ul>
-            <button className="btn btn-primary" onClick={() => handleApprove(order._id)}>Approve Order</button>
+            <button className="btn btn-success" onClick={handleApprove}>Finish Order</button>
           </li>
         ))}
       </ul>
@@ -137,4 +138,4 @@ return (
 )
 }
 
-export default AllOrder;
+export default ReadyOrder;

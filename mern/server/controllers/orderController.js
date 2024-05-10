@@ -64,8 +64,68 @@ const getOrder = (req, res) => {
     });
 };
 
+//Waiter
+// Контролер за вземане и удобряване на новите поръчки от сервитьорите
+const getNewOrders = async (req, res) => {
+  try {
+    const newOrders = await Order.find({ status: 'New' });
+    res.json(newOrders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const approveOrder = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Approved' }, { new: true });
+    res.json(updatedOrder);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+const getReadyOrders = async (req, res) => {
+  try {
+    const newOrders = await Order.find({ status: 'Ready' });
+    res.json(newOrders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+
+//Cook
+const getApprovedOrders = async (req, res) => {
+  try {
+    const approvedOrders = await Order.find({ status: 'Approved' });
+    res.json(approvedOrders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const putReadyOrders = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Ready' }, { new: true });
+    res.json(updatedOrder);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+
 module.exports = {
   addOrder,
    getOrders,
-    getOrder
+    getOrder,
+    getNewOrders,
+    approveOrder,
+    getApprovedOrders,
+    putReadyOrders,
+    getReadyOrders
 }

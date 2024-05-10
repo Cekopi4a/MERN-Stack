@@ -3,14 +3,14 @@ import Swal from 'sweetalert2';
 import { useState,useEffect } from 'react';
 import {useAuthContext} from '../../hooks/useAuthContext';
 
-const AllOrder = () => {
+const CookOrder = () => {
     const [orders,setOrders] = useState([]);
     const { user } = useAuthContext();
     
     useEffect(() => {
         const fetchOrders = async () => {
           try {
-            const response = await fetch(`http://localhost:5050/api/order/getNewOrder`, {
+            const response = await fetch(`http://localhost:5050/api/order/getApprovedOrders`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -43,24 +43,24 @@ const AllOrder = () => {
 
 
     const handleApprove = async (orderId) => {
-      console.log(orderId);
-        try {
-      const response = await fetch(`http://localhost:5050/api/order/approveOrder/${orderId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
+        console.log(orderId);
+          try {
+        const response = await fetch(`http://localhost:5050/api/order/putReadyOrder/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Неуспешна заявка за одобряване на поръчка');
       }
-    });
-    if (!response.ok) {
-      throw new Error('Неуспешна заявка за одобряване на поръчка');
+      alert('Поръчката беше успешно одобрена!');
+    } catch (error) {
+      console.error('Грешка при одобряване на поръчка:', error);
+      alert('Грешка при одобряване на поръчка. Моля, опитайте отново.');
     }
-    alert('Поръчката беше успешно одобрена!');
-  } catch (error) {
-    console.error('Грешка при одобряване на поръчка:', error);
-    alert('Грешка при одобряване на поръчка. Моля, опитайте отново.');
-  }
-};
+  };
 
 
 return (
@@ -73,7 +73,7 @@ return (
             <h4>Status: {order.status}</h4>
             <p>Payment Type: {order.paymentType}</p>
             <p>Subtotal: {order.subtotal}</p>
-            <p>Created At: {order.createdAt.$date}</p>
+            <p>Created At: {order.createdAt}</p>
             <h4>Order Items:</h4>
             <ul>
               {order.orderItems.map(item => (
@@ -129,7 +129,7 @@ return (
                </div>  
               ))}
             </ul>
-            <button className="btn btn-primary" onClick={() => handleApprove(order._id)}>Approve Order</button>
+            <button className="btn btn-danger" onClick={() => handleApprove(order._id)}>Ready Order</button>
           </li>
         ))}
       </ul>
@@ -137,4 +137,4 @@ return (
 )
 }
 
-export default AllOrder;
+export default CookOrder;

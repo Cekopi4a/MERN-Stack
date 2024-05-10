@@ -19,6 +19,11 @@ const orderSchema = new mongoose.Schema({
   paymentType: { type: String },
   subtotal: { type: Number },
   user_id: { type: String, required: true },
+  status: {
+    type: String,
+    enum: ['New', 'Approved', 'Ready', 'Sent', 'Rejected'],
+    default: 'New'
+  },
   createdAt: { type: Date, default: Date.now }
 });
 

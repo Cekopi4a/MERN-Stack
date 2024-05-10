@@ -25,14 +25,24 @@ const Navbar = () => {
 // При натискане на копче "Извикай сервитьор"
 function callWaiter() {
   const message = (user.table);
-  console.log(message);
+  try{
   socket.send(message); // Променете съобщението според вашите нужди
+Swal.fire({
+  position: "top",
+  icon: "success",
+  title: "Сервитьора идва към вас!",
+  showConfirmButton: false,
+  timer: 2000
+})
+  }catch{
+    console.log("Error");
+  }
 }
 
   return(
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
     <div className="container px-4 px-lg-5">
-        <a className="navbar-brand" href="/">Restaurant</a>
+        <Link className="navbar-brand" href="/">Restaurant</Link>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -40,8 +50,10 @@ function callWaiter() {
                 <li className="nav-item"><Link className="nav-link active" aria-current="page" to="/shop">Shop</Link></li>
                 {user && (
                   <>
+                   {user.role == "guest" && (
                   <li className="nav-item"><Link className="nav-link active" aria-current="page" onClick={callWaiter} >Call Waiter!</Link></li>
-                {user.role == "admin" && (
+                   )}
+                {(user.role == "admin" || user.role == "waiter") && (
                 <li className="nav-item"><Link className="nav-link active" aria-current="page" to="/dashboard">DashBoard</Link></li>
               )}
               </>
@@ -54,7 +66,7 @@ function callWaiter() {
             {!user && (
                     <>
                 <span className="nav-item"><Link className="nav-link" to="/login">Login</Link></span>
-            <span className="nav-item"><Link className="nav-link" to="/register">Register</Link></span>
+        
             </>
                 )}
 
@@ -62,9 +74,12 @@ function callWaiter() {
       
       {user && (
         <>
-        <span className={style.name}>
+          {user.role == "guest" && (
+            <>
+          <span className={style.name}>
         You are on {user.table}
       </span>
+      
                 <Link to="/cart">
                 <button className="btn btn-outline-dark" type="submit">
                 <div
@@ -74,8 +89,11 @@ function callWaiter() {
                     <span className="badge bg-dark text-white ms-1 rounded-pill">{totalItems}</span>
                 </button>
                 </Link>
-                 <div className="nav-item"><Link className="nav-link" onClick={handleClick}>Logout</Link></div>
-                 </>
+          </>
+          )}
+          
+                 <div className="nav-item"><Link className="nav-link" onClick={handleClick}>Logout</Link></div>  
+                 </>  
       )}
             </div>
         </div>

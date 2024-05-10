@@ -1,26 +1,41 @@
-import { useState,useEffect } from "react";
+import React,{ useState,useEffect } from "react";
 import { Link } from 'react-router-dom' 
 import { useContext } from 'react';
 import {AuthContext} from './../../context/AuthContext';
 import AllOrder from "./AllOrder";
+import CookOrder from "./CookOrder";
+import ReadyOrder from "./ReadyOrder";
+import Users from "./Users";
 import Swal from 'sweetalert2';
 import { client } from './waiterClient'; 
 
+const componentMap = {
+  showComponent1: () => <AllOrder />,
+    showComponent2: () => <CookOrder />,
+    showComponent3: () => <ReadyOrder />,
+    showComponent4: () => <Users />,
+};
 
 const DashBoard = () => {
   const { user } = useContext(AuthContext);
-  const [message, setMessage] = useState([]);
+  const [message, setMessage] = useState({});
+  const [activeComponent, setActiveComponent] = useState(null);
 
-
+  const handleComponentChange = (componentKey) => {
+    setActiveComponent(componentKey);
+  };
 
   useEffect(() => {
+  if(user.role == "waiter"){
     client.onmessage = function(e) {
       if (typeof e.data === 'string') {
         setMessage(e.data);
         Swal.fire(message);
       }
     };
-    
+  }
+  else{
+  }
     return () => {
       client.onmessage = null;
     };
@@ -49,7 +64,7 @@ return(
           <i className="fas fa-laugh-wink" />
         </div>
         <div className="sidebar-brand-text mx-3">
-          SB Admin <sup>2</sup>
+           Admin
         </div>
       </a>
       {/* Divider */}
@@ -58,63 +73,52 @@ return(
       <li className="nav-item active">
         <a className="nav-link" href="index.html">
           <i className="fas fa-fw fa-tachometer-alt" />
-          <span>Dashboard</span>
+          <span>Role-{user.role}</span>
         </a>
       </li>
       {/* Divider */}
       <hr className="sidebar-divider" />
       {/* Heading */}
       <div className="sidebar-heading">Interface</div>
-      {/* Nav Item - Pages Collapse Menu */}
-      <li className="nav-item">
-        <a
-          className="nav-link collapsed"
-          href="#"
-          data-toggle="collapse"
-          data-target="#collapseTwo"
-          aria-expanded="true"
-          aria-controls="collapseTwo"
-        >
-          <i className="fas fa-fw fa-cog" />
-          <span>Components</span>
-        </a>
-        <div
-          id="collapseTwo"
-          className="collapse"
-          aria-labelledby="headingTwo"
-          data-parent="#accordionSidebar"
-        >
-          <div className="bg-white py-2 collapse-inner rounded">
-            <h6 className="collapse-header">Custom Components:</h6>
-            <a className="collapse-item" href="buttons.html">
-              Buttons
-            </a>
-            <a className="collapse-item" href="cards.html">
-              Cards
-            </a>
-          </div>
-        </div>
-      </li>
+
+      
       {/* Nav Item - Utilities Collapse Menu */}
       <li className="nav-item">
+      {user && (
+                  <>
+                   {user.role == "waiter" && (
+                    <>
       <li className="nav-item">
-        <Link className="nav-link" to="">
+        <Link className="nav-link" onClick={() => handleComponentChange('AllOrder')}>
           <i className="fas fa-fw fa-table" />
-          <span>Orders</span>
+          <span>New Orders</span>
         </Link>
       </li>
-      <li className="nav-item">
-        <a className="nav-link" href="tables.html">
+        <li className="nav-item">
+        <Link className="nav-link" onClick={() => handleComponentChange('ReadyOrder')}>
+         <i className="bi bi-list-ul" />
+         <span>Ready Orders</span>
+       </Link>
+     </li>
+     <li className="nav-item">
+         <Link className="nav-link" onClick={() => handleComponentChange('Users')}>
           <i className="bi bi-person-circle" />
           <span>Users</span>
-        </a>
+        </Link>
       </li>
+     </>
+        )}
+        {user.role == "admin"  && (
       <li className="nav-item">
-        <a className="nav-link" href="tables.html">
-          <i className="fas fa-fw fa-table" />
-          <span>Tables</span>
-        </a>
+         <Link className="nav-link" onClick={() =>  handleComponentChange('CookOrder')}>
+          <i className="bi bi-person-circle" />
+          <span>New Orders</span>
+        </Link>
       </li>
+        )}
+         </>
+             )}
+     
         <div
           id="collapseUtilities"
           className="collapse"
@@ -325,9 +329,11 @@ return(
             </div>
           </div>
 
-       <AllOrder />
-         
-         
+       
+          {activeComponent === 'AllOrder' && <AllOrder />}
+          {activeComponent === 'ReadyOrder' && <ReadyOrder />}
+          {activeComponent === 'CookOrder' && <CookOrder />}
+          {activeComponent === 'Users' && <Users />}
 
         
 

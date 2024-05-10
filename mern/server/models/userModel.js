@@ -20,8 +20,12 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'cook','waiter'],
-    default: 'user'
+    enum: ['guest', 'cook','waiter'],
+    default: 'guest'
+  },
+  isBlocked: {
+    type: Boolean,
+    default: false // По подразбиране, потребителят не е блокиран
   }
 })
 
@@ -68,6 +72,10 @@ userSchema.statics.login = async function(email, password,table,role) {
   const match = await bcrypt.compare(password, user.password)
   if (!match) {
     throw Error('Incorrect password')
+  }
+
+  if (user.isBlocked == true) {
+    throw Error('User is blocked!')
   }
 
   return user

@@ -1,9 +1,15 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 
-exports.requireAuth = async (req, res, next) => {
+exports.requireAuth = async (email,req, res, next) => {
   // verify user is authenticated
   const { authorization } = req.headers
+
+  const user = await this.findOne({ email })
+
+  if (user.isBlocked == true) {
+    throw Error('User is blocked!')
+  }
 
   if (!authorization) {
     return res.status(401).json({error: 'Authorization token required'})
