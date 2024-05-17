@@ -1,10 +1,13 @@
-import * as itemService from "../service/itemService";
-import { useState,useEffect } from "react";
+import * as itemService from "../../service/itemService";
+import { useState,useEffect,useContext } from "react";
+import {AuthContext} from './../../context/AuthContext';
 import { Outlet, Link, useParams } from "react-router-dom";
-import ShopItem from "./ShopItem";
+import Product from './Product';
+import Swal from 'sweetalert2';
 
 
-function Shop() {
+function AddProduct() {
+    const { user } = useContext(AuthContext);
     const [items, setItems] = useState([]);
     const [viewType, setViewType] = useState('grid'); // По подразбиране сетваме грид изглед
 
@@ -67,17 +70,44 @@ function handleTopping() {
     .then(result => setItems(result));
 }    
 
+
+const AddItemHandler = async (e) => {
+    e.preventDefault();
+
+    const itemData = Object.fromEntries(new FormData(e.currentTarget))
+  console.log(itemData);
+        try {
+      const response = await fetch(`http://localhost:5050/api/product/add`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      },
+      body: JSON.stringify(itemData)
+    });
+    const result = await response.json();
+
+    setItems(item => [...item,result]);
+    Swal.fire({
+      position: "top",
+      icon: "success",
+      title: "Успешно регистирахте нов потребител!",
+      showConfirmButton: false,
+      timer: 2500
+    });
+    if (!response.ok) {
+      throw new Error('Неуспешна заявка за добавяне!');
+    }
+    alert('Потребителя беше успешно добавен!');
+    
+  } catch (error) {
+    console.error('Грешка при одобряване на поръчка:', error);
+    alert('Грешка при одобряване на поръчка. Моля, опитайте отново.');
+  }
+};
+
   return (
     <>
-    <header className="bg-dark py-5">
-    <div className="container px-4 px-lg-5 my-5">
-        <div className="text-center text-white">
-            <h1 className="display-4 fw-bolder">Shop in style</h1>
-            <p className="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
-        </div>
-    </div>
-</header>
-
 <section className="py-5">
                 <div className="container text-center">
              <div className="btn-group" role="group" aria-label="Basic outlined example">
@@ -125,7 +155,7 @@ function handleTopping() {
                     <div className={`row gx-4 gx-lg-5 row-cols-1  ${viewType === 'list' ? 'row-cols-1' : 'row-cols-md-2 row-cols-xl-4'} justify-content-center`}>
                         {/* Проверяваме типа на изгледа и показваме съдържанието според него */}
                         {items.map((item) => (
-                            <ShopItem
+                            <Product
                                 key={item._id}
                                 id={item._id}
                                 name={item.name}
@@ -139,10 +169,76 @@ function handleTopping() {
                         ))}
                     </div>
                 </div>
+                <div className="col-sm-6">
+						<a href="#addItemModal" className="btn btn-success" data-toggle="modal"><i className="bi bi-person-plus"></i> <span>Добави потребител</span></a>						
+					</div>
             </section>
+            
+            <div id="addItemModal" className="modal fade">
+	<div className="modal-dialog">
+		<div className="modal-content">
+			<form onSubmit={AddItemHandler}>
+				<div className="modal-header">						
+					<h4 className="modal-title">Добави</h4>
+					<button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div className="modal-body">	
+                <label>Категория</label>
+    <div className="input-group mb-3">
+  <select className="form-select" name="collectionName" id="inputGroupSelect02">
+    <option selected>Избери...</option>
+    <option value="Alcohol">Алкохол</option>
+    <option value="Alcohol-free">Безалкохолно</option>
+    <option value="Grill">Грил</option>
+    <option value="Hot-dishes">Топли ястия</option>
+    <option value="Main-dishes">Основни ястия</option>
+    <option value="Salad">Салати</option>
+    <option value="Soup">Супи</option>
+    <option value="Bread">Хляб</option>
+    <option value="Dessert">Десерти</option>
+    <option value="Toppings and side dishes">Добавки</option>
+  </select>
+  <label className="input-group-text" htmlFor="inputGroupSelect02">Опция</label>
+</div>
+					<div className="form-group">
+						<label>Име</label>
+						<input type="text" name="name" className="form-control" required/>
+					</div>
+					<div className="form-group">
+						<label>Количество</label>
+						<input type="text" name="volume" className="form-control" />
+					</div>
+                    <div className="form-group">
+						<label>Грамаж</label>
+						<input type="text" name="weight" className="form-control" />
+					</div>
+                    <label>Цена</label>
+        <div class="input-group">
+  <input type="text" class="form-control" name="price" aria-label="Dollar amount (with dot and two decimal places)"/>
+  <span class="input-group-text">лв</span>
+  <span class="input-group-text">0.00</span>
+</div>
+<label>Описание</label>
+<div class="input-group">
+  <span class="input-group-text">Описание</span>
+  <textarea class="form-control" name="description" aria-label="With textarea"></textarea>
+</div>
 
+<div className="form-group">
+						<label>Изображение</label>
+						<input type="text" name="imageUrl" className="form-control" required/>
+					</div>
+				</div>
+				<div className="modal-footer">
+					<input type="button" className="btn btn-default" data-dismiss="modal" value="Cancel"/>
+					<input type="submit" className="btn btn-success" value="Добави" />
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
         </>
   );
 }
 
-export default Shop;
+export default AddProduct;

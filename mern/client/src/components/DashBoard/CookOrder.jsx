@@ -37,7 +37,7 @@ const CookOrder = () => {
 
       
         fetchOrders();
-    }, []); // Празен масив от зависимости, ако не се изисква повторно извикванe
+    }, [orders]); // Празен масив от зависимости, ако не се изисква повторно извикванe
 
 
 
@@ -52,6 +52,8 @@ const CookOrder = () => {
           'Authorization': `Bearer ${user.token}`
         }
       });
+      const json = await response.json();
+
       if (!response.ok) {
         throw new Error('Неуспешна заявка за одобряване на поръчка');
       }
@@ -65,16 +67,16 @@ const CookOrder = () => {
 
 return (
     <div>
-      <h1>Поръчки</h1>
+      <h1>Нови Поръчки</h1>
       <ul>
         {orders.map(order => (
           <li key={order._id.$oid}>
-            <h2>User Table: {order.userTable}</h2>
-            <h4>Status: {order.status}</h4>
-            <p>Payment Type: {order.paymentType}</p>
-            <p>Subtotal: {order.subtotal}</p>
-            <p>Created At: {order.createdAt}</p>
-            <h4>Order Items:</h4>
+             <h2>Маса: {order.userTable}</h2>
+            <h3>Статус: {order.status}</h3>
+            <h5>Начин на плащане: {order.paymentType}</h5>
+            <h5>Общо: {order.subtotal}</h5>
+            <h5>Създадена на: {new Date(order.createdAt).toLocaleString()}</h5>
+            <h4>Продукти:</h4>
             <ul>
               {order.orderItems.map(item => (
                  <div key={item._id}>
@@ -129,7 +131,7 @@ return (
                </div>  
               ))}
             </ul>
-            <button className="btn btn-danger" onClick={() => handleApprove(order._id)}>Ready Order</button>
+            <button className="btn btn-danger" onClick={() => handleApprove(order._id)}>Завърши поръчка</button>
           </li>
         ))}
       </ul>

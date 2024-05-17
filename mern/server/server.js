@@ -5,23 +5,13 @@ const cookieParser = require('cookie-parser');
 const cors =require ('cors');
 const mongoose = require ('mongoose');
 const WebSocket = require('ws');
-const records =require ('./routes/record.js');
-const alcoholfree =require ('./routes/alcoholfree.js');
-const dessert =require ('./routes/dessert.js');
-const grill =require ('./routes/grill.js');
-const hot_dish =require ('./routes/hot_dish.js');
-const _hlqb =require ('./routes/_hlqb.js');
-const maindish =require ('./routes/maindish.js');
-const salad =require ('./routes/salad.js');
-const soup =require ('./routes/soup.js');
-const topping =require ('./routes/topping.js');
 const login =require ('./routes/login.js');
 const authRoute =require ('./routes/authRoute.js');
 const cartRoute = require('./routes/cart.js');
 const orderRoute = require("./routes/orderRoute");
 const callRoute = require("./routes/callRoute");
 const userRoute = require("./routes/userRoute");
-
+const product = require("./routes/product");
 
 const wss = new WebSocket.Server({ port: 8080 });
 
@@ -53,22 +43,13 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use("/alcohol", records);
-app.use("/alcfree", alcoholfree);
-app.use("/dessert", dessert );
-app.use("/grill", grill);
-app.use("/hlqb", _hlqb);
-app.use("/hotdish", hot_dish);
-app.use("/maindish", maindish);
-app.use("/salad", salad);
-app.use("/soup", soup);
-app.use("/topping", topping);
 app.use("/login", login);
 app.use('/api/auth', authRoute);
 app.use('/api/cart', cartRoute);
 app.use('/api/order', orderRoute);
 app.use('/api/call', callRoute);
 app.use('/api/users', userRoute);
+app.use('/api/product', product);
 
 
 
@@ -87,7 +68,7 @@ app.use((err, req, res, next) => {
 
 
 //Mongo DB
-mongoose.connect('mongodb+srv://analytics:Cekopi4a@cluster0.slg4lq3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect('mongodb+srv://analytics:Cekopi4a@cluster0.slg4lq3.mongodb.net/Restaurant?retryWrites=true&w=majority&appName=Cluster0')
   .then(()=> console.log('Connected to MongoDB!'))
   .catch((error) => console.error('Failed to connect!!!',error))
 

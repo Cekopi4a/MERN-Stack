@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
   user_id: { type: String, required: true },
   status: {
     type: String,
-    enum: ['New', 'Approved', 'Ready', 'Sent', 'Rejected'],
+    enum: ['New', 'Approved', 'Ready', 'Finnish', 'Rejected'],
     default: 'New'
   },
   createdAt: { type: Date, default: Date.now }

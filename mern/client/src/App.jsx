@@ -22,7 +22,36 @@ import RouteGuard from './routeguards/RouteGuard'
 import DashBoard from "./components/DashBoard/DashBoard"
 import AllOrder from "./components/DashBoard/AllOrder"
 import CardPaymentForm from './components/Payment/CardPaymentForm'
+import Crypto from './components/Crypto';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 
+
+
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: {
+          greeting: 'Hello World!',
+          buttonLabel: 'Switch to Bulgarian'
+        }
+      },
+      bg: {
+        translation: {
+          greeting: 'Здравей свят!',
+          buttonLabel: 'Превключи към английски'
+        }
+      }
+    },
+    lng: 'en',
+    fallbackLng: 'en',
+
+    interpolation: {
+      escapeValue: false
+    }
+  });
 
 
 function App() {
@@ -46,7 +75,7 @@ function App() {
       logoutUser(); // Clear data when window/tab is closed
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
@@ -69,6 +98,7 @@ function App() {
       
        {/*Need to be login!*/}
        <Route element={<RouteGuard />} >
+       <Route path='/crypto' element={<Crypto />} />
        <Route path={Path.Logout} element={<Logout />} />
        <Route path='/dashboard' element={<DashBoard />} />
        <Route path='/dashboard/allOrder' element={<AllOrder />} />

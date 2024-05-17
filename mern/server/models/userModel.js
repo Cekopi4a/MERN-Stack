@@ -20,8 +20,8 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['guest', 'cook','waiter'],
-    default: 'guest'
+    enum: ['guest','admin','waiter'],
+    required: true
   },
   isBlocked: {
     type: Boolean,

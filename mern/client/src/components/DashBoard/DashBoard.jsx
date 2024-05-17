@@ -6,14 +6,19 @@ import AllOrder from "./AllOrder";
 import CookOrder from "./CookOrder";
 import ReadyOrder from "./ReadyOrder";
 import Users from "./Users";
+import Crypto from "../Crypto";
+import AddProduct from "./AddProduct";
 import Swal from 'sweetalert2';
 import { client } from './waiterClient'; 
 
 const componentMap = {
-  showComponent1: () => <AllOrder />,
+    showComponent1: () => <AllOrder />,
     showComponent2: () => <CookOrder />,
     showComponent3: () => <ReadyOrder />,
     showComponent4: () => <Users />,
+    showComponent5: () => <Crypto />,
+    showComponent6: () => <AddProduct />,
+    
 };
 
 const DashBoard = () => {
@@ -64,7 +69,7 @@ return(
           <i className="fas fa-laugh-wink" />
         </div>
         <div className="sidebar-brand-text mx-3">
-           Admin
+           Табло за управление
         </div>
       </a>
       {/* Divider */}
@@ -73,7 +78,7 @@ return(
       <li className="nav-item active">
         <a className="nav-link" href="index.html">
           <i className="fas fa-fw fa-tachometer-alt" />
-          <span>Role-{user.role}</span>
+          <span>Роля-{user.role}</span>
         </a>
       </li>
       {/* Divider */}
@@ -91,19 +96,31 @@ return(
       <li className="nav-item">
         <Link className="nav-link" onClick={() => handleComponentChange('AllOrder')}>
           <i className="fas fa-fw fa-table" />
-          <span>New Orders</span>
+          <span>Нови поръчки</span>
         </Link>
       </li>
         <li className="nav-item">
         <Link className="nav-link" onClick={() => handleComponentChange('ReadyOrder')}>
          <i className="bi bi-list-ul" />
-         <span>Ready Orders</span>
+         <span>Готови поръчки</span>
        </Link>
      </li>
      <li className="nav-item">
          <Link className="nav-link" onClick={() => handleComponentChange('Users')}>
           <i className="bi bi-person-circle" />
-          <span>Users</span>
+          <span>Потребители</span>
+        </Link>
+      </li>
+      <li className="nav-item">
+         <Link className="nav-link" onClick={() => handleComponentChange('Crypto')}>
+          <i className="bi bi-plus-square" />
+          <span>Qr код</span>
+        </Link>
+      </li>
+      <li className="nav-item">
+         <Link className="nav-link" onClick={() => handleComponentChange('AddProduct')}>
+          <i className="bi bi-journal-text" />
+          <span>Продукти</span>
         </Link>
       </li>
      </>
@@ -119,99 +136,13 @@ return(
          </>
              )}
      
-        <div
-          id="collapseUtilities"
-          className="collapse"
-          aria-labelledby="headingUtilities"
-          data-parent="#accordionSidebar"
-        >
-          <div className="bg-white py-2 collapse-inner rounded">
-            <h6 className="collapse-header">Custom Utilities:</h6>
-            <a className="collapse-item" href="utilities-color.html">
-              Colors
-            </a>
-            <a className="collapse-item" href="utilities-border.html">
-              Borders
-            </a>
-            <a className="collapse-item" href="utilities-animation.html">
-              Animations
-            </a>
-            <a className="collapse-item" href="utilities-other.html">
-              Other
-            </a>
-          </div>
-        </div>
       </li>
       {/* Divider */}
       <hr className="sidebar-divider" />
       {/* Heading */}
-      <div className="sidebar-heading">Addons</div>
-      {/* Nav Item - Pages Collapse Menu */}
-      <li className="nav-item">
-        <a
-          className="nav-link collapsed"
-          href="#"
-          data-toggle="collapse"
-          data-target="#collapsePages"
-          aria-expanded="true"
-          aria-controls="collapsePages"
-        >
-          <i className="fas fa-fw fa-folder" />
-          <span>Pages</span>
-        </a>
-        <div
-          id="collapsePages"
-          className="collapse"
-          aria-labelledby="headingPages"
-          data-parent="#accordionSidebar"
-        >
-          <div className="bg-white py-2 collapse-inner rounded">
-            <h6 className="collapse-header">Login Screens:</h6>
-            <a className="collapse-item" href="login.html">
-              Login
-            </a>
-            <a className="collapse-item" href="register.html">
-              Register
-            </a>
-            <a className="collapse-item" href="forgot-password.html">
-              Forgot Password
-            </a>
-            <div className="collapse-divider" />
-            <h6 className="collapse-header">Other Pages:</h6>
-            <a className="collapse-item" href="404.html">
-              404 Page
-            </a>
-            <a className="collapse-item" href="blank.html">
-              Blank Page
-            </a>
-          </div>
-        </div>
-      </li>
-    
-      {/* Divider */}
-      <hr className="sidebar-divider d-none d-md-block" />
-      {/* Sidebar Toggler (Sidebar) */}
-      <div className="text-center d-none d-md-inline">
-        <button className="rounded-circle border-0" id="sidebarToggle" />
-      </div>
-      {/* Sidebar Message */}
-      <div className="sidebar-card d-none d-lg-flex">
-        <img
-          className="sidebar-card-illustration mb-2"
-          src="img/undraw_rocket.svg"
-          alt="..."
-        />
-        <p className="text-center mb-2">
-          <strong>SB Admin Pro</strong> is packed with premium features,
-          components, and more!
-        </p>
-        <a
-          className="btn btn-success btn-sm"
-          href="https://startbootstrap.com/theme/sb-admin-pro"
-        >
-          Upgrade to Pro!
-        </a>
-      </div>
+     
+     
+     
     </ul>
     {/* End of Sidebar */}
     {/* Content Wrapper */}
@@ -225,7 +156,8 @@ return(
         <div className="container-fluid">
           {/* Page Heading */}
           <div className="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
+           
+           
            
               
           </div>
@@ -334,6 +266,8 @@ return(
           {activeComponent === 'ReadyOrder' && <ReadyOrder />}
           {activeComponent === 'CookOrder' && <CookOrder />}
           {activeComponent === 'Users' && <Users />}
+          {activeComponent === 'Crypto' && <Crypto />}
+          {activeComponent === 'AddProduct' && <AddProduct />}
 
         
 

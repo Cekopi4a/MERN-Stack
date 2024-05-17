@@ -1,13 +1,13 @@
-const alcohol = 'http://localhost:5050/alcohol';
-const  alcoholfree= 'http://localhost:5050/alcfree';
-const  dessert= 'http://localhost:5050/dessert';
-const  grill= 'http://localhost:5050/grill';
-const  hlqb= 'http://localhost:5050/hlqb';
-const  hotdishes= 'http://localhost:5050/hotdish';
-const  maindishes= 'http://localhost:5050/maindish';
-const  salad= 'http://localhost:5050/salad';
-const  soup= 'http://localhost:5050/soup';
-const  topping= 'http://localhost:5050/topping';
+const alcohol = 'http://localhost:5050/api/product/alcohol';
+const  alcoholfree= 'http://localhost:5050/api/product/alcfree';
+const  dessert= 'http://localhost:5050/api/product/dessert';
+const  grill= 'http://localhost:5050/api/product/grill';
+const  hlqb= 'http://localhost:5050/api/product/bread';
+const  hotdishes= 'http://localhost:5050/api/product/hotdish';
+const  maindishes= 'http://localhost:5050/api/product/maindish';
+const  salad= 'http://localhost:5050/api/product/salad';
+const  soup= 'http://localhost:5050/api/product/soup';
+const  topping= 'http://localhost:5050/api/product/topping';
 
 
 

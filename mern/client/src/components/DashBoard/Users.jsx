@@ -6,35 +6,54 @@ import {useAuthContext} from '../../hooks/useAuthContext';
 const Users = () => {
     const [users,setUsers] = useState([]);
     const { user } = useAuthContext();
-  const [selectedUser, setSelectedUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState({
+      email: '',
+      password: '',
+      role: '',
+      table: '',
+    });
+    const [userId, setUserId] = useState("");
  
-  const EditUserHandler = (user) => {
-    setSelectedUser(user);
-    $('#editUserModal').modal('show'); // Използване на jQuery за показване на модалния прозорец
-  };
+    const EditUserHandler = async (e,userId) => {
+      e.preventDefault();
+console.log(currentUser);
+      // try {
+      //   const response = await fetch(`http://localhost:5050/api/users/editUser/${userId}`, {
+      //     method: 'PUT', // Използвайте PUT метод за редактиране
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': `Bearer ${user.token}`
+      //     },
+      //     body: JSON.stringify(currentUser)
+      //   });
   
-  const handleSaveUser = async () => {
-    // Тук добавете логика за изпращане на редактирания потребител към сървъра
-    try {
-      const response = await fetch(`http://localhost:5050/api/users/editUser/${userId}`,{
-      method: 'PUT',
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
-      },
-      body: JSON.stringify()
-  });
+      //   if (!response.ok) {
+      //     throw new Error('Неуспешна заявка за редактиране!');
+      //   }
+  
+      //   const result = await response.json();
 
-  const result = await response.json();
+      // setUsers(users => [...users,result]);
+  
+      //   Swal.fire({
+      //     position: "top",
+      //     icon: "success",
+      //     title: "Успешно редактирахте потребител!",
+      //     showConfirmButton: false,
+      //     timer: 2500
+      //   });
+        
+      // } catch (error) {
+      //   console.error('Грешка при редактиране на потребител:', error);
+      //   alert('Грешка при редактиране на потребител. Моля, опитайте отново.');
+      // }
+    };
 
-  return result;
-}catch (error) {
-  console.error('Възникна грешка при извличане на поръчки:', error.message);
-  // Тук можете да добавите логика за обработка на грешката, като показване на съобщение за потребителя
-}
-    console.log('Edited user:', editedUser);
-    handleCloseModal();
-  };
+const onChange = (e) => {
+  setCurrentUser({ ...currentUser, [e.target.name]: e.target.value });
+};
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,7 +99,7 @@ const Users = () => {
       e.preventDefault();
 
       const userData = Object.fromEntries(new FormData(e.currentTarget))
-    
+    console.log(userData);
           try {
         const response = await fetch(`http://localhost:5050/api/auth/signup`, {
         method: 'POST',
@@ -239,8 +258,8 @@ return (
                          src='https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg'
                          // className="w-100"
                          alt="neshto"
-                         width={100}
-                         height={75}
+                         width={150}
+                         height={150}
                        />
                      </div>
                    </div>
@@ -274,13 +293,13 @@ return (
 
                        
                      </div>
-                     
+                    
                      <p className="text-start text-md-center">
                        <strong>
                        <div class="btn-group btn-group-sm  gap-3" role="group" aria-label="Small button group">
-                    <button href="#editUserModal" onClick={() => handleEditUser(user._id)}  className="btn btn-success" data-toggle="modal" >Edit</button>
+                    <button href="#editUserModal" onClick={() => setCurrentUser(user)} className="btn btn-success" data-toggle="modal" >Редактирай</button>
 
-                    <button href="" onClick={() => deleteUser(user._id)} class="btn btn-danger"  data-toggle="modal">Delete</button>
+                    <button href="" onClick={() => deleteUser(user._id)} class="btn btn-danger"  data-toggle="modal">Изтрий</button>
                 </div>
                        </strong>
                     </p>
@@ -288,8 +307,8 @@ return (
                     <p className="text-start text-md-center">
                        <strong>
                        <div class="btn-group btn-group-sm  gap-3" role="group" aria-label="Small button group">
-                      	<button onClick={() => blockUser(user._id)} class="btn btn-secondary" data-toggle="modal">Block</button>
-                        <button onClick={() => unblockUser(user._id)} class="btn btn-info" data-toggle="modal">Unblock</button>
+                      	<button onClick={() => blockUser(user._id)} class="btn btn-secondary" data-toggle="modal">Блокирай</button>
+                        <button onClick={() => unblockUser(user._id)} class="btn btn-info" data-toggle="modal">Отблокирай</button>
                       </div>
                        </strong>
                     </p>
@@ -303,17 +322,17 @@ return (
             </ul>
             {/* <button className="btn btn-success" onClick={() => handleApprove(order._id)}>Add new user</button> */}
             <div className="col-sm-6">
-						<a href="#addItemModal" className="btn btn-success" data-toggle="modal"><i className="bi bi-person-plus"></i> <span>Add New User</span></a>						
+						<a href="#addItemModal" className="btn btn-success" data-toggle="modal"><i className="bi bi-person-plus"></i> <span>Добави потребител</span></a>						
 					</div>
       </ul>
 
 
-  <div id="addItemModal" className="modal fade">
+      <div id="addItemModal" className="modal fade">
 	<div className="modal-dialog">
 		<div className="modal-content">
 			<form onSubmit={AddUserHandler}>
 				<div className="modal-header">						
-					<h4 className="modal-title">Add User</h4>
+					<h4 className="modal-title">Добави</h4>
 					<button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div className="modal-body">	
@@ -326,7 +345,7 @@ return (
 						<input type="text" name="password" className="form-control" required/>
 					</div>
 			<div className="input-group mb-3">
-  <select className="form-select" id="inputGroupSelect02">
+  <select className="form-select" name="role" id="inputGroupSelect02">
     <option selected>Choose...</option>
     <option value="guest">guest</option>
     <option value="waiter">waiter</option>
@@ -341,7 +360,7 @@ return (
 				</div>
 				<div className="modal-footer">
 					<input type="button" className="btn btn-default" data-dismiss="modal" value="Cancel"/>
-					<input type="submit" className="btn btn-success" value="Add" />
+					<input type="submit" className="btn btn-success" value="Добави" />
 				</div>
 			</form>
 		</div>
@@ -374,22 +393,22 @@ return (
 <div id="editUserModal" className="modal fade">
 	<div className="modal-dialog">
 		<div className="modal-content">
-			<form onSubmit={EditUserHandler}>
+			<form onSubmit={() => EditUserHandler(userId)}>
 				<div className="modal-header">						
-					<h4 className="modal-title">Edit User</h4>
-          <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 className="modal-title">Редактирай</h4>
+					<button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div className="modal-body">	
 					<div className="form-group">
 						<label>Email</label>
-						<input type="text" name="email" onChange={user.email} className="form-control" required/>
+						<input type="text" name="email" value={currentUser.email} onChange={onChange} className="form-control" required/>
 					</div>
 					<div className="form-group">
 						<label>Password</label>
-						<input type="text" name="password" onChange={user.password} className="form-control" required/>
+						<input type="text" name="password" value={currentUser.password} onChange={onChange} className="form-control" required/>
 					</div>
 			<div className="input-group mb-3">
-  <select className="form-select" onChange={user.role} id="inputGroupSelect02">
+  <select className="form-select" name="role" value={currentUser.role} onChange={onChange} id="inputGroupSelect02">
     <option selected>Choose...</option>
     <option value="guest">guest</option>
     <option value="waiter">waiter</option>
@@ -399,12 +418,12 @@ return (
 </div>
 					<div className="form-group">
 						<label>Table</label>
-						<input type="text" name="table"  onChange={user.table}className="form-control" required/>
+						<input type="text" name="table" value={currentUser.table} onChange={onChange} className="form-control" required/>
 					</div>
 				</div>
 				<div className="modal-footer">
-          <input type="button" className="btn btn-default" data-dismiss="modal" value="Cancel"/>
-					<input type="submit" className="btn btn-success" value="Edit" />
+					<input type="button" className="btn btn-default" data-dismiss="modal" value="Cancel"/>
+					<input type="submit" className="btn btn-success" value="Редактирай" />
 				</div>
 			</form>
 		</div>

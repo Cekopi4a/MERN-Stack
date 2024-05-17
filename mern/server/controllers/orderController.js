@@ -1,5 +1,6 @@
 const Order = require("../models/order");
-const Cart = require("../models/cart");
+// const Cart = require("../models/product");
+const User = require("../models/userModel");
 
 const addOrder = async (req, res) => {
   try {
@@ -7,7 +8,7 @@ const addOrder = async (req, res) => {
     const user_id = req.user._id;
     console.log('User ID from cookie:', user_id);
     console.log(userTable);
-    
+
 
     const order = new Order({ orderItems, paymentType, subtotal, user_id,userTable });
     const savedOrder = await order.save();
@@ -95,6 +96,16 @@ const getReadyOrders = async (req, res) => {
   }
 };
 
+const finnishOrder = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Finnish' }, { new: true });
+    res.json(updatedOrder);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 
 //Cook
@@ -127,5 +138,6 @@ module.exports = {
     approveOrder,
     getApprovedOrders,
     putReadyOrders,
-    getReadyOrders
+    getReadyOrders,
+    finnishOrder
 }

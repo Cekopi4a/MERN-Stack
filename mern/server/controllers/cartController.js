@@ -1,4 +1,4 @@
-const Cart = require('../models/cart.js')
+// const Cart = require('../models/product.js')
 const mongoose = require('mongoose')
 
 // get all workouts

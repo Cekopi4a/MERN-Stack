@@ -47,7 +47,7 @@ return (
                             <div className="fixed-bottom">
                                 <Link to='/login'>
                                     <button type="button" className="btn btn-outline-primary">
-                                        Login to make order!
+                                        Влез и поръчай!
                                     </button>
                                 </Link>
                                 </div>
@@ -64,7 +64,7 @@ return (
                                     showConfirmButton: false,
                                     timer: 1500
                                 }))} className="btn border border-secondary rounded-pill px-3 text-primary">
-                                    <i className="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                    <i className="fa fa-shopping-bag me-2 text-primary"></i> Добави в количката
                                 </button>
                             </div>
                         </div>

@@ -33,19 +33,19 @@ if(cvv == cvv.length == '3'){
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Card Number:
+        Номер на карта:
         <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
       </label>
       <label>
-        Expiry Date:
+        Дата на валидност:
         <input type="text" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
       </label>
       <label>
-        CVV:
+        CVV код:
         <input type="text" value={cvv} onChange={(e) => setCVV(e.target.value)} />
       </label>
       <hr />
-      <button type="submit"  disabled={!isFormValid}>Pay</button>
+      <button type="submit"  disabled={!isFormValid}>Плащане</button>
     </form>
   );
 };

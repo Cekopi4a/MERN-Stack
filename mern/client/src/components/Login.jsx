@@ -3,6 +3,8 @@ import { useState,useEffect } from "react"
 import { useLogin } from "../hooks/useLogin"
 import { useSearchParams } from 'react-router-dom';
 import { Html5QrcodeScanner } from 'html5-qrcode';
+import CryptoJS from 'crypto-js';
+import Swal from 'sweetalert2';
 
 
 const Login = () => {
@@ -10,23 +12,31 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const {login, error, isLoading} = useLogin()
   const [queryParameters] = useSearchParams();
+  const [decryptedText, setDecryptedText] = useState('');
 
-  useEffect(() => {
-    (async () => {
-      try {
-        await login(queryParameters.get("email"), queryParameters.get("password"));
-      } catch (error) {
-        console.error('Error logging in:', error);
-      }
-    })();
-  }, []);
+  const secretKey = 'MySecretKey123'; // Ключ за криптиране
+
+   // Дефинирайте функция за декриптиране на данни
+function decryptData(encryptedData) {
+  const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+  return bytes.toString(CryptoJS.enc.Utf8);
+}
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-  
-    await login(queryParameters.get("email"), queryParameters.get("password"))
+useEffect(() => {
+  async function loginWithDecryptedData() {
+    try {
+      const decryptedEmail = await decryptData(queryParameters.get("email"));
+      const decryptedPassword = await decryptData(queryParameters.get("password"));
+      await login(decryptedEmail, decryptedPassword);
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   }
+
+  loginWithDecryptedData();
+}, []);
+
 
 
   //Qr Code Scanner
@@ -51,6 +61,7 @@ const Login = () => {
         scanner.clear();
         setScanResult(result);
         isScanning = false; // Set isScanning to false to stop further scanning
+        extractParams(result); 
       }
     }
 
@@ -59,9 +70,52 @@ const Login = () => {
     }
   }, []);
 
+  function extractParams(result) {
+    if (isValidUrl(result)) {
+      async function loginWithDecryptedData() {
+        try {
+          const urlParams = new URLSearchParams(new URL(result).search);
+          const encryptedEmail = urlParams.get('email');
+          const encryptedPassword = urlParams.get('password');
+          
+          const decryptedEmail = await decryptData(encryptedEmail);
+          const decryptedPassword = await decryptData(encryptedPassword);
+          await login(decryptedEmail, decryptedPassword);
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Грешни данни за вход!",
+          });
+        }
+      }
+    
+      loginWithDecryptedData();
+    } else {
+      console.error('Invalid URL:', result);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Грешни данни за вход!",
+      });
+      // Handle invalid URL, maybe display an error message to the user
+    }
+  }
+  
+
+  function isValidUrl(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   function handleManualSerialNumberChange(event) {
     setManualSerialNumber(event.target.value);
   }
+
   
   return (
 <div className='container'>
@@ -72,8 +126,7 @@ const Login = () => {
  <h1>QR Scanning Code</h1>
       {scanResult ? (
         <div>
-          <p>Success: <a href={scanResult}>{scanResult}</a></p>
-          <p>Serial Number: {scanResult.slice(-16)}</p>
+          <p>Success: <a href=''></a></p>
         </div>
       ) : (
         <div>
