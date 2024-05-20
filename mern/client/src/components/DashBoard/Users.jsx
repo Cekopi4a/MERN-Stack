@@ -17,36 +17,36 @@ const Users = () => {
     const EditUserHandler = async (e,userId) => {
       e.preventDefault();
 console.log(currentUser);
-      // try {
-      //   const response = await fetch(`http://localhost:5050/api/users/editUser/${userId}`, {
-      //     method: 'PUT', // Използвайте PUT метод за редактиране
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'Authorization': `Bearer ${user.token}`
-      //     },
-      //     body: JSON.stringify(currentUser)
-      //   });
+      try {
+        const response = await fetch(`http://localhost:5050/api/users/editUser/${userId}`, {
+          method: 'PUT', // Използвайте PUT метод за редактиране
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user.token}`
+          },
+          body: JSON.stringify(currentUser)
+        });
   
-      //   if (!response.ok) {
-      //     throw new Error('Неуспешна заявка за редактиране!');
-      //   }
+        if (!response.ok) {
+          throw new Error('Неуспешна заявка за редактиране!');
+        }
   
-      //   const result = await response.json();
+        const result = await response.json();
 
-      // setUsers(users => [...users,result]);
+      setUsers(users => [...users,result]);
   
-      //   Swal.fire({
-      //     position: "top",
-      //     icon: "success",
-      //     title: "Успешно редактирахте потребител!",
-      //     showConfirmButton: false,
-      //     timer: 2500
-      //   });
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: "Успешно редактирахте потребител!",
+          showConfirmButton: false,
+          timer: 2500
+        });
         
-      // } catch (error) {
-      //   console.error('Грешка при редактиране на потребител:', error);
-      //   alert('Грешка при редактиране на потребител. Моля, опитайте отново.');
-      // }
+      } catch (error) {
+        console.error('Грешка при редактиране на потребител:', error);
+        alert('Грешка при редактиране на потребител. Моля, опитайте отново.');
+      }
     };
 
 const onChange = (e) => {

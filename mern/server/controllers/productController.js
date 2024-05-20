@@ -9,6 +9,19 @@ const Salad = require("../models/salad");
 const Soup = require("../models/soup");
 const Topping = require("../models/topping");
 
+const models = {
+  Alcohol: Alcohol,
+  alcfree: AlcoholFree,
+  dessert: Dessert,
+  grill: Grill,
+  bread: Breads,
+  hotdish: HotDishes,
+  maindish: MainDishes,
+  salad: Salad,
+  soup: Soup,
+  topping: Topping,
+};
+
 // Контролер за добавяне на продукт към колекция
 const addProductToCollection = async (req, res) => {
   const { collectionName, name, description, price, weight, volume, imageUrl} = req.body;
@@ -110,21 +123,24 @@ const getCollectionData = async (req, res) => {
   };
 
   const deleteProduct = async (req, res) => {
-    const userId = req.params.id;
-  
-    try {
-      // Намерете потребителя по id и го изтрийте
-      const deletedUser = await Alcohol.findByIdAndDelete(userId);
-  
-      if (!deletedUser) {
-        return res.status(404).json({ message: 'Product not found' });
-      }
-  
-      res.status(200).json({ message: 'Product deleted successfully', user: deletedUser });
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+  const { collection, id } = req.params;
+  console.log(collection,id);
+  const model = models[collection];
+
+  if (!model) {
+    return res.status(400).send({ error: 'Invalid collection' });
+  }
+
+  try {
+    const deletedProduct = await model.findByIdAndDelete(id);
+    if (!deletedProduct) {
+      return res.status(404).send({ error: 'Product not found' });
     }
-  };
+    res.send(deletedProduct);
+  } catch (error) {
+    res.status(500).send({ error: 'Server error' });
+  }
+};
 
   module.exports = { 
     getCollectionData,

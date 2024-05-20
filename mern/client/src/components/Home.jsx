@@ -7,6 +7,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import * as itemService from '../service/itemService'
 import { useLogout } from '../hooks/useLogout';
 import Swal from 'sweetalert2';
+import Video from '../../img/Restaurant-Video.mp4';
 
 
 const Home = () => {
@@ -129,7 +130,7 @@ useEffect(() => {
 
   return(
     <>
-  <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
+ 
   <div className="carousel-inner">
     <div className="carousel-item active" data-bs-interval="5000">
       <img src="https://www.restolacuisine.com/restaurants/restaurant-la-cuisine/website/images/Lacuisine_resto.jpg" style={{height: "780px"}} className="d-block w-100" alt="..."/>
@@ -149,7 +150,10 @@ useEffect(() => {
     <span className="carousel-control-next-icon" aria-hidden="true"></span>
     <span className="visually-hidden">Next</span>
   </button>
-</div>
+  
+  <video src={Video} className="object-fit-cover" autoplay/>
+  <source src={Video} type="video/mp4"/>
+  <source src="movie.ogg" type="video/ogg"/>
 
 
     

@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 function AddProduct() {
     const { user } = useContext(AuthContext);
     const [items, setItems] = useState([]);
+    const [collection, setCollection] = useState('');
     const [viewType, setViewType] = useState('grid'); // По подразбиране сетваме грид изглед
 
     const handleToggleView = (type) => {
@@ -23,51 +24,64 @@ function AddProduct() {
     function handleAlc() {
             itemService.getAlc()
             .then(result => setItems(result));
+            setCollection('alcohol');
+            console.log(collection);
     }    
 
     function handleAlcFree() {
         itemService.getAlcFree()
         .then(result => setItems(result));
+        setCollection('alcfree');
+        console.log(collection);
 }    
 
 function handleDess() {
     itemService.getDess()
     .then(result => setItems(result));
+    setCollection('dessert');
 }    
 
 function handleGrill() {
     itemService.getGrill()
     .then(result => setItems(result));
+    setCollection('grill');
 }    
 
 function handleHlqb() {
     itemService.getHlqb()
     .then(result => setItems(result));
+    setCollection('bread');
 }    
 
 function handleHot() {
     itemService.getHot()
     .then(result => setItems(result));
+    setCollection('hotdish');
 }    
 
 function handleMain() {
     itemService.getMain()
     .then(result => setItems(result));
+    setCollection('maindish');
 }    
 
 function handleSal() {
     itemService.getSal()
     .then(result => setItems(result));
+    setCollection('salad');
+    console.log(collection);
 }    
 
 function handleSoup() {
     itemService.getSoup()
     .then(result => setItems(result));
+    setCollection('soup');
 }    
 
 function handleTopping() {
     itemService.getTop()
     .then(result => setItems(result));
+    setCollection('topping');
 }    
 
 
@@ -87,7 +101,6 @@ const AddItemHandler = async (e) => {
     });
     const result = await response.json();
 
-    setItems(item => [...item,result]);
     Swal.fire({
       position: "top",
       icon: "success",
@@ -165,6 +178,7 @@ const AddItemHandler = async (e) => {
                                 price={item.price}
                                 imageUrl={item.imageUrl}
                                 viewType={viewType} // Подаваме типа на изгледа на компонента ShopItem
+                                collection={collection}
                             />
                         ))}
                     </div>

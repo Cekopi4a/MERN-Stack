@@ -12,6 +12,7 @@ const Product = ({
     price,
     imageUrl,
     viewType,
+    collection,
 }) => {
 
     const { user } = useAuthContext();
@@ -25,11 +26,12 @@ const Product = ({
         imageUrl};
  
         const deleteProduct = async (id) => {
+          console.log(collection,id);
             const hasconfirm = confirm(`Сигурен ли сте че искате да изтриете продукт с ID-${id}`);
           
               if(hasconfirm){
                   try {
-              const response = await fetch(`http://localhost:5050/api/product/delete/${id}`, {
+              const response = await fetch(`http://localhost:5050/api/product/delete/${collection}/${id}`, {
                 method: 'DELETE',
                 headers: {
                   'Content-Type': 'application/json',

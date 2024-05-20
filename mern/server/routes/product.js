@@ -7,6 +7,6 @@ const router = express.Router();
 // Маршрут за вземане на данни от колекция
 router.post('/add', addProductToCollection);
 router.get('/:id', getCollectionData);
-router.delete('/delete/:id', deleteProduct);
+router.delete('/delete/:collection/:id', deleteProduct);
 
 module.exports = router;

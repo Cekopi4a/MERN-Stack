@@ -1,5 +1,15 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
+const CryptoJS = require('crypto-js');
+
+const secretKey = 'MySecretKey123'; // Ключ за криптиране
+
+// Функция за декриптиране на данни
+function decryptData(encryptedData) {
+  const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+  return bytes.toString(CryptoJS.enc.Utf8);
+}
+
 
 const createToken = (_id,role) => {
   let expiresIn = '20m'; // По подразбиране за клиенти
@@ -13,8 +23,12 @@ const createToken = (_id,role) => {
 const loginUser = async (req, res) => {
   const {email, password} = req.body
 
-  try {
-    const user = await User.login(email, password)
+    try {
+      const decryptedEmail = decryptData(email);
+      const decryptedPassword = decryptData(password);
+
+      
+    const user = await User.login(decryptedEmail, decryptedPassword)
      console.log(user);
         // create a token
     const token = createToken(user._id,user.role)

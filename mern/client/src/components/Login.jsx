@@ -3,7 +3,6 @@ import { useState,useEffect } from "react"
 import { useLogin } from "../hooks/useLogin"
 import { useSearchParams } from 'react-router-dom';
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import CryptoJS from 'crypto-js';
 import Swal from 'sweetalert2';
 
 
@@ -12,24 +11,22 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const {login, error, isLoading} = useLogin()
   const [queryParameters] = useSearchParams();
-  const [decryptedText, setDecryptedText] = useState('');
 
-  const secretKey = 'MySecretKey123'; // Ключ за криптиране
 
-   // Дефинирайте функция за декриптиране на данни
-function decryptData(encryptedData) {
-  const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
-  return bytes.toString(CryptoJS.enc.Utf8);
-}
 
 
 useEffect(() => {
   async function loginWithDecryptedData() {
     try {
-      const decryptedEmail = await decryptData(queryParameters.get("email"));
-      const decryptedPassword = await decryptData(queryParameters.get("password"));
-      await login(decryptedEmail, decryptedPassword);
+        const encryptedEmail = queryParameters.get('email');
+        const encryptedPassword = queryParameters.get('password');
+      await login(encryptedEmail, encryptedPassword);
     } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Грешни данни за вход!",
+      });
       console.error('Error logging in:', error);
     }
   }

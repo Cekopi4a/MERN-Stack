@@ -30,7 +30,7 @@ const deleteUser = async (req, res) => {
 
 const editUser = async (req, res) => {
   const { id } = req.params; // ID на потребителя за редактиране
-  const { email, table, role } = req.body; // Новите данни за потребителя
+  const { email, password, table, role } = req.body; // Новите данни за потребителя
 
   try {
     // Проверка дали потребителят съществува
@@ -41,6 +41,7 @@ const editUser = async (req, res) => {
 
     // Актуализация на данните на потребителя
     user.email = email;
+    user.password = password;
     user.table = table;
     user.role = role;
 
