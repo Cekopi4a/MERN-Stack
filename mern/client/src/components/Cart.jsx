@@ -118,7 +118,7 @@ const ShowCart = () => {
                               <p className="text-start text-md-center">
                                 <strong>
                                   <span className="text-muted"></span>{" "}
-                                  x{item.price}
+                                  x{item.price.toFixed(2)}
                                 </strong>
                               лв.</p>
                             </div>

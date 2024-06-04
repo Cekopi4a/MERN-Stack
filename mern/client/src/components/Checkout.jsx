@@ -172,7 +172,7 @@ console.log(orderData);
                           <p className="text-start text-md-center">
                             <strong>
                               <span className="text-muted">{item.quantity}</span>
-                              x {item.price}
+                              x {item.price.toFixed(2)}
                             </strong>
                           лв.</p>
                         </div>

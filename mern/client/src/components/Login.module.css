@@ -52,14 +52,6 @@ span.password {
   padding-top: 16px;
 }
 
-.snimka{
-  width: "250px";
-  height:"80%";
-  margin-inline-start: 380px;
-  align-items: center;
-  border-radius: 350px;
-}
-
 .error{
   font-size: 20px;
   color: red;

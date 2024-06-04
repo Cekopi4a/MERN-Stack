@@ -69,14 +69,14 @@ function handleTopping() {
 
   return (
     <>
-    <header className="bg-dark py-5">
-    <div className="container px-4 px-lg-5 my-5">
-        <div className="text-center text-white">
-            <h1 className="display-4 fw-bolder">Shop in style</h1>
-            <p className="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+    <section id="stats-counter" className="stats-counter ">
+      <div className="container" data-aos="zoom-out">
+        <div className="row gy-4">
+          
+        
         </div>
-    </div>
-</header>
+      </div>
+    </section>
 
 <section className="py-5">
                 <div className="container text-center">
@@ -88,7 +88,7 @@ function handleTopping() {
     <div className="container px-4 px-lg-5">
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1SupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
            <div className="collapse navbar-collapse" id="navbar1SupportedContent">
-             <ul className="navbar-nav me-auto ms-lg-4">
+             <ul className="navbar-nav me-auto ms-lg-8">
  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleAlc}>Алкохол</button>
  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleAlcFree}>Безалкохолно</button>
   <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleMain}>Основни ястия</button>
@@ -107,10 +107,10 @@ function handleTopping() {
                 <div className="container text-end">
                     <div className="btn-group" role="group" aria-label="Basic outlined example">
                         {/* Добавяме бутони за превключване на изглед */}
-                        <button type="button" className={`btn ${viewType === 'grid' ? 'active' : ''} m-1`} onClick={() => handleToggleView('grid')}>
+                        <button type="button" className={`btn ${viewType === 'grid' ? 'active' : ''} m-6`} onClick={() => handleToggleView('grid')}>
                            <i className="bi bi-grid-fill"></i>
                         </button>
-                        <button type="button" className={`btn ${viewType === 'list' ? 'active' : ''} m-1`} onClick={() => handleToggleView('list')}>
+                        <button type="button" className={`btn ${viewType === 'list' ? 'active' : ''} m-6`} onClick={() => handleToggleView('list')}>
                            <i className="bi bi-list-ul"></i>
                         </button>
                     </div>

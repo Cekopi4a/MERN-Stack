@@ -75,9 +75,7 @@ useEffect(() => {
           const encryptedEmail = urlParams.get('email');
           const encryptedPassword = urlParams.get('password');
           
-          const decryptedEmail = await decryptData(encryptedEmail);
-          const decryptedPassword = await decryptData(encryptedPassword);
-          await login(decryptedEmail, decryptedPassword);
+          await login(encryptedEmail, encryptedPassword);
         } catch (error) {
           Swal.fire({
             icon: "error",
@@ -116,14 +114,14 @@ useEffect(() => {
   
   return (
 <div className='container'>
-   <h1>Login</h1>
- 
- <img src='https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg' className={styles.snimka} alt='' />
-
- <h1>QR Scanning Code</h1>
+   <h1>Вход</h1>
+   <div class="text-center">
+  <img src="../img/qr.jpg" class="img-fluid" alt="..."></img>
+</div>
+ <h1>Сканирай QR кода</h1>
       {scanResult ? (
         <div>
-          <p>Success: <a href=''></a></p>
+          <p>Success: <a href={scanResult}></a></p>
         </div>
       ) : (
         <div>

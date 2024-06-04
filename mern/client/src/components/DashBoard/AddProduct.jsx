@@ -122,13 +122,13 @@ const AddItemHandler = async (e) => {
   return (
     <>
 <section className="py-5">
-                <div className="container text-center">
+<div className="container text-center">
              <div className="btn-group" role="group" aria-label="Basic outlined example">
 
 
   <nav className="navbar navbar-expand-lg navbar-light bg-light">
   <div className="d-inline-flex gap-1 ">
-    <div className="container px-4 px-lg-5">
+    <div className="container-sm px-2 px-lg-10">
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1SupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
            <div className="collapse navbar-collapse" id="navbar1SupportedContent">
              <ul className="navbar-nav me-auto ms-lg-4">
@@ -164,6 +164,7 @@ const AddItemHandler = async (e) => {
 </div>
 </div>
 
+
                 <div className="container px-4 px-lg-5 mt-5">
                     <div className={`row gx-4 gx-lg-5 row-cols-1  ${viewType === 'list' ? 'row-cols-1' : 'row-cols-md-2 row-cols-xl-4'} justify-content-center`}>
                         {/* Проверяваме типа на изгледа и показваме съдържанието според него */}
@@ -178,13 +179,13 @@ const AddItemHandler = async (e) => {
                                 price={item.price}
                                 imageUrl={item.imageUrl}
                                 viewType={viewType} // Подаваме типа на изгледа на компонента ShopItem
-                                collection={collection}
+                                collection={item.collection}
                             />
                         ))}
                     </div>
                 </div>
                 <div className="col-sm-6">
-						<a href="#addItemModal" className="btn btn-success" data-toggle="modal"><i className="bi bi-person-plus"></i> <span>Добави потребител</span></a>						
+						<a href="#addItemModal" className="btn btn-success" data-toggle="modal"><i className="bi bi-plus-circle"></i> <span>Добави продукт</span></a>						
 					</div>
             </section>
             
@@ -227,15 +228,15 @@ const AddItemHandler = async (e) => {
 						<input type="text" name="weight" className="form-control" />
 					</div>
                     <label>Цена</label>
-        <div class="input-group">
-  <input type="text" class="form-control" name="price" aria-label="Dollar amount (with dot and two decimal places)"/>
-  <span class="input-group-text">лв</span>
-  <span class="input-group-text">0.00</span>
+        <div className="input-group">
+  <input type="text" className="form-control" name="price" aria-label="Dollar amount (with dot and two decimal places)"/>
+  <span className="input-group-text">лв</span>
+  <span className="input-group-text">0.00</span>
 </div>
 <label>Описание</label>
-<div class="input-group">
-  <span class="input-group-text">Описание</span>
-  <textarea class="form-control" name="description" aria-label="With textarea"></textarea>
+<div className="input-group">
+  <span className="input-group-text">Описание</span>
+  <textarea className="form-control" name="description" aria-label="With textarea"></textarea>
 </div>
 
 <div className="form-group">

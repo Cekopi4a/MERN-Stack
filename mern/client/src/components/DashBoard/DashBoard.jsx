@@ -129,7 +129,7 @@ return(
       <li className="nav-item">
          <Link className="nav-link" onClick={() =>  handleComponentChange('CookOrder')}>
           <i className="bi bi-person-circle" />
-          <span>New Orders</span>
+          <span>Нови поръчки</span>
         </Link>
       </li>
         )}
