@@ -69,16 +69,6 @@ const callWaiter = async () => {
 }
 
 
-
-  const isInBounds = (lat, long) => {
-    // Примерни граници за София
-    const minLat = 42.43;
-    const maxLat = 42.75;
-    const minLong = 25.18;
-    const maxLong = 26.68;
-    return lat >= minLat && lat <= maxLat && long >= minLong && long <= maxLong;
-};
-
 useEffect(() => {
   const fetchData = async () => {
     try {
@@ -123,7 +113,13 @@ useEffect(() => {
   fetchData();
 }, [locationValid]);
 
-
+const isInBounds = (lat, long) => {
+  const minLat = 42.43;
+  const maxLat = 42.75;
+  const minLong = 25.18;
+  const maxLong = 26.68;
+  return lat >= minLat && lat <= maxLat && long >= minLong && long <= maxLong;
+};
 
   const checkLocation = () => {
     return new Promise((resolve, reject) => {

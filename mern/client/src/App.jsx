@@ -6,7 +6,6 @@ import { useAuthContext } from './hooks/useAuthContext';
 import { useLogout } from './hooks/useLogout';
 import Path from './path'
 
-
 import Navbar from './components/Navbar'
 import Shop from './components/Shop'
 import Home from './components/Home'
@@ -17,7 +16,6 @@ import Cart from './components/Cart'
 import Checkout from './components/Checkout'
 import NoFound from './components/NotFound'
 import Logout from './components/Logout'
-import ErrorBoundary from './Error/ErrorBoundarys'
 import RouteGuard from './routeguards/RouteGuard'
 import DashBoard from "./components/DashBoard/DashBoard"
 import AllOrder from "./components/DashBoard/AllOrder"
@@ -25,8 +23,6 @@ import CardPaymentForm from './components/Payment/CardPaymentForm'
 import Crypto from './components/Crypto';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-
-
 
 i18n
   .use(initReactI18next)
@@ -86,15 +82,13 @@ function App() {
     
     <div>
   
-               <Navbar />
+  <Navbar />
     <Routes>
       <Route path='*' element={<NoFound />} />
        <Route path={Path.Home} element={<Home />} />
        <Route path='/login' element={!user ? <Login /> : <Navigate to="/" />} />
        <Route path='/login/:queryParameters' element={!user ? <Login /> : <Navigate to="/" />} />
        <Route path='/shop' element={<Shop />} />
-       
-   
       
        {/*Need to be login!*/}
        <Route element={<RouteGuard />} >
@@ -108,13 +102,10 @@ function App() {
        <Route path='/checkout' element={<Checkout/>} />
        <Route path='/cart/:id' element={<Cart/>} />
        </Route>
-
 </Routes>
 <Footer />
-
     </div>
   )
 }
 
-
-export default App
+export default App;

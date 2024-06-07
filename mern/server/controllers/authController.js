@@ -10,7 +10,6 @@ function decryptData(encryptedData) {
   return bytes.toString(CryptoJS.enc.Utf8);
 }
 
-
 const createToken = (_id,role) => {
   let expiresIn = '20m'; // По подразбиране за клиенти
   if (role === 'admin' || role =="waiter") {

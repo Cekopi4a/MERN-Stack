@@ -1,5 +1,4 @@
 const Order = require("../models/order");
-// const Cart = require("../models/product");
 const User = require("../models/userModel");
 
 const addOrder = async (req, res) => {
@@ -13,7 +12,6 @@ const addOrder = async (req, res) => {
     const order = new Order({ orderItems, paymentType, subtotal, user_id,userTable });
     const savedOrder = await order.save();
 
-    // Вместо да върнете целия обект, върнете само нужната информация (например, идентификатора на поръчката)
     res.status(200).json({ order });
   } catch (error) {
     res.status(400).json({ error: error.message });
