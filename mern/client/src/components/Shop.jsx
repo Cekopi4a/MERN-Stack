@@ -78,17 +78,18 @@ function handleTopping() {
       </div>
     </section>
 
-<section className="py-5">
+<section className="py-5 ">
                 <div className="container text-center">
              <div className="btn-group" role="group" aria-label="Basic outlined example">
 
 
-  <nav className="navbar navbar-expand-lg navbar-light bg-light">
+  <nav className="navbar navbar-expand-lg navbar-light bg-light ">
   <div className="d-inline-flex gap-1 ">
     <div className="container px-4 px-lg-5">
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1SupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span className="navbar-toggler-icon"></span></button>
            <div className="collapse navbar-collapse" id="navbar1SupportedContent">
              <ul className="navbar-nav me-auto ms-lg-8">
+                
  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleAlc}>Алкохол</button>
  <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleAlcFree}>Безалкохолно</button>
   <button type="button" className="btn active m-1" aria-pressed="true" onClick={handleMain}>Основни ястия</button>

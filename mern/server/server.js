@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const cors =require ('cors');
 const mongoose = require ('mongoose');
 const WebSocket = require('ws');
+const http = require('http');
+const { Server } = require('socket.io');
 const login =require ('./routes/login.js');
 const authRoute =require ('./routes/authRoute.js');
 const cartRoute = require('./routes/cart.js');
@@ -12,6 +14,7 @@ const orderRoute = require("./routes/orderRoute");
 const callRoute = require("./routes/callRoute");
 const userRoute = require("./routes/userRoute");
 const product = require("./routes/product");
+
 
 const wss = new WebSocket.Server({ port: 8080 });
 
@@ -30,13 +33,18 @@ wss.on('connection', function connection(ws) {
   });
 });
 
-console.log('WebSocket сървър стартиран на порт 8080');
 
 
 const PORT = process.env.PORT || 5050;
 const app = express();
 app.use(cors());
-
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173", // Адресът на вашето React приложение
+    methods: ["GET", "POST", "PUT"]
+  }
+});
 
 //Routes
 app.use(cors());
@@ -53,6 +61,15 @@ app.use('/api/product', product);
 
 
 
+io.on('connection', (socket) => {
+  console.log('New WebSocket connection');
+
+  socket.on('disconnect', () => {
+    console.log('WebSocket disconnected');
+  });
+});
+
+app.set('io', io); // прави io достъпно в app обекта
 
 
 //Global Error Hnadler
@@ -68,7 +85,10 @@ app.use((err, req, res, next) => {
 
 
 //Mongo DB
-mongoose.connect('mongodb+srv://analytics:Cekopi4a@cluster0.slg4lq3.mongodb.net/Restaurant?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect('mongodb+srv://analytics:Cekopi4a@cluster0.slg4lq3.mongodb.net/Restaurant?retryWrites=true&w=majority&appName=Cluster0',{
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(()=> console.log('Connected to MongoDB!'))
   .catch((error) => console.error('Failed to connect!!!',error))
 

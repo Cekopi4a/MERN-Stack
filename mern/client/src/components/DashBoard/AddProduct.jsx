@@ -17,14 +17,20 @@ function AddProduct() {
     };
 
     useEffect(() => {
+      console.log('Collection changed:', collection);
+  }, [collection]);
+  
+
+    useEffect(() => {
        itemService.getAlc()
        .then(result => setItems(result));
+       setCollection('Alcohol');
     },[]);
 
     function handleAlc() {
             itemService.getAlc()
             .then(result => setItems(result));
-            setCollection('alcohol');
+            setCollection('Alcohol');
             console.log(collection);
     }    
 
@@ -39,6 +45,7 @@ function handleDess() {
     itemService.getDess()
     .then(result => setItems(result));
     setCollection('dessert');
+    console.log(collection);
 }    
 
 function handleGrill() {
@@ -69,7 +76,6 @@ function handleSal() {
     itemService.getSal()
     .then(result => setItems(result));
     setCollection('salad');
-    console.log(collection);
 }    
 
 function handleSoup() {
@@ -89,7 +95,7 @@ const AddItemHandler = async (e) => {
     e.preventDefault();
 
     const itemData = Object.fromEntries(new FormData(e.currentTarget))
-  console.log(itemData);
+  // console.log(itemData);
         try {
       const response = await fetch(`http://localhost:5050/api/product/add`, {
       method: 'POST',
@@ -104,14 +110,13 @@ const AddItemHandler = async (e) => {
     Swal.fire({
       position: "top",
       icon: "success",
-      title: "Успешно регистирахте нов потребител!",
+      title: "Успешно добавихте нов продукт!",
       showConfirmButton: false,
       timer: 2500
     });
     if (!response.ok) {
       throw new Error('Неуспешна заявка за добавяне!');
     }
-    alert('Потребителя беше успешно добавен!');
     
   } catch (error) {
     console.error('Грешка при одобряване на поръчка:', error);
@@ -166,7 +171,7 @@ const AddItemHandler = async (e) => {
 
 
                 <div className="container px-4 px-lg-5 mt-5">
-                    <div className={`row gx-4 gx-lg-5 row-cols-1  ${viewType === 'list' ? 'row-cols-1' : 'row-cols-md-2 row-cols-xl-4'} justify-content-center`}>
+                    <div className={`row gx-4 gx-lg-5 row-cols-1  ${viewType === 'list' ? 'row-cols-1' : 'row-cols-md-2 row-cols-xl-3'} justify-content-center`}>
                         {/* Проверяваме типа на изгледа и показваме съдържанието според него */}
                         {items.map((item) => (
                             <Product
@@ -178,8 +183,8 @@ const AddItemHandler = async (e) => {
                                 volume={item.volume}
                                 price={item.price}
                                 imageUrl={item.imageUrl}
+                                collection={collection}
                                 viewType={viewType} // Подаваме типа на изгледа на компонента ShopItem
-                                collection={item.collection}
                             />
                         ))}
                     </div>

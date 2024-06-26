@@ -9,10 +9,8 @@ export const OrderProvider = ({ children }) => {
   const [orderItem, setOrderItem ] = useState([]);
   let totalItems = 0;
   
-
   const addOrder = (paymentType, subtotal) => {
    
-
      // Проверка за съществуващ обект в localStorage
      let orderItems = JSON.parse(localStorage.getItem('cartItems'));
 

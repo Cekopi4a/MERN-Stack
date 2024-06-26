@@ -10,6 +10,7 @@ import Crypto from "../Crypto";
 import AddProduct from "./AddProduct";
 import Swal from 'sweetalert2';
 import { client } from './waiterClient'; 
+import BlockOrder from "./BlockOrder";
 
 const componentMap = {
     showComponent1: () => <AllOrder />,
@@ -18,6 +19,7 @@ const componentMap = {
     showComponent4: () => <Users />,
     showComponent5: () => <Crypto />,
     showComponent6: () => <AddProduct />,
+    showComponent7: () => <BlockOrder />,
     
 };
 
@@ -103,6 +105,12 @@ return(
         <Link className="nav-link" onClick={() => handleComponentChange('ReadyOrder')}>
          <i className="bi bi-list-ul" />
          <span>Готови поръчки</span>
+       </Link>
+     </li>
+     <li className="nav-item">
+        <Link className="nav-link" onClick={() => handleComponentChange('BlockOrder')}>
+         <i className="bi bi-list-ul" />
+         <span>Блокирани поръчки</span>
        </Link>
      </li>
      <li className="nav-item">
@@ -268,6 +276,7 @@ return(
           {activeComponent === 'Users' && <Users />}
           {activeComponent === 'Crypto' && <Crypto />}
           {activeComponent === 'AddProduct' && <AddProduct />}
+          {activeComponent === 'BlockOrder' && <BlockOrder />}
 
         
 

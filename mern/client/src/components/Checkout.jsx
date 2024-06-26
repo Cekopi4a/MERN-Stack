@@ -59,7 +59,6 @@ const Checkout = () => {
 
     let orderItems = JSON.parse(localStorage.getItem('cartItems'));
 
-console.log(orderItems);
   const orderData ={
     orderItems: orderItems,
     paymentType: selectedPaymentType,
@@ -83,7 +82,7 @@ console.log(orderData);
           Swal.fire({
             position: "top",
             icon: "error",
-            title: "Your time is up. Sign in again.",
+            title: "Времето ти изтече.Влез отново!.",
             showConfirmButton: false,
             timer: 3000
           });
@@ -94,7 +93,7 @@ console.log(orderData);
           Swal.fire({
             position: "top",
             icon: "success",
-            title: "Your order has been placed successfully!",
+            title: "Вашата поръчка е направена успешно!",
             showConfirmButton: false,
             timer: 5000
           });

@@ -1,6 +1,6 @@
 // Примерен код за насочване на маршрутите към контролера
 const express = require('express');
-const { getCollectionData,addProductToCollection,deleteProduct } = require('../controllers/productController');
+const { getCollectionData,addProductToCollection,deleteProduct,getCurrentProduct, updateProductById} = require('../controllers/productController');
 
 const router = express.Router();
 
@@ -8,5 +8,7 @@ const router = express.Router();
 router.post('/add', addProductToCollection);
 router.get('/:id', getCollectionData);
 router.delete('/delete/:collection/:id', deleteProduct);
+router.get('/getOne/:collection/:id', getCurrentProduct);
+router.put('/updateProduct/:collection/:id', updateProductById);
 
 module.exports = router;

@@ -74,7 +74,6 @@ const addProductToCollection = async (req, res) => {
 };
 
 
-
 const getCollectionData = async (req, res) => {
     const collectionName  = req.params.id; // Получаваме името на колекцията от URL параметър
   
@@ -88,28 +87,28 @@ const getCollectionData = async (req, res) => {
           collectionData = await AlcoholFree.find(); // Връщаме всички данни от колекцията за супи
           break;
         case 'dessert':
-          collectionData = await Dessert.find(); // Връщаме всички данни от колекцията за хляб
+          collectionData = await Dessert.find(); 
           break;
           case 'grill':
-          collectionData = await Grill.find(); // Връщаме всички данни от колекцията за хляб
+          collectionData = await Grill.find(); 
           break;
           case 'bread':
-          collectionData = await Breads.find(); // Връщаме всички данни от колекцията за хляб
+          collectionData = await Breads.find(); 
           break;
           case 'hotdish':
-          collectionData = await HotDishes.find(); // Връщаме всички данни от колекцията за хляб
+          collectionData = await HotDishes.find(); 
           break;
           case 'maindish':
-          collectionData = await MainDishes.find(); // Връщаме всички данни от колекцията за хляб
+          collectionData = await MainDishes.find(); 
           break;
           case 'salad':
-          collectionData = await Salad.find(); // Връщаме всички данни от колекцията за хляб
+          collectionData = await Salad.find(); 
           break;
           case 'soup':
-          collectionData = await Soup.find(); // Връщаме всички данни от колекцията за хляб
+          collectionData = await Soup.find(); 
           break;
           case 'topping':
-          collectionData = await Topping.find(); // Връщаме всички данни от колекцията за хляб
+          collectionData = await Topping.find(); 
           break;
         default:
           return res.status(400).json({ error: 'Невалидно име на колекция' });
@@ -122,28 +121,121 @@ const getCollectionData = async (req, res) => {
     }
   };
 
-  const deleteProduct = async (req, res) => {
-  const { collection, id } = req.params;
-  console.log(collection,id);
-  const model = models[collection];
 
-  if (!model) {
-    return res.status(400).send({ error: 'Invalid collection' });
-  }
+  const deleteProduct = async (req, res) => {
+    const { collection, id } = req.params;
+    console.log(collection,id);
+    const model = models[collection];
+  
+    if (!model) {
+      return res.status(400).send({ error: 'Invalid collection' });
+    }
+  
+    try {
+      const deletedProduct = await model.findByIdAndDelete(id);
+      if (!deletedProduct) {
+        return res.status(404).send({ error: 'Product not found' });
+      }
+      res.send(deletedProduct);
+    } catch (error) {
+      res.status(500).send({ error: 'Server error' });
+    }
+  };
+
+
+const getCurrentProduct = async (req, res) => {
+  let { collection, id } = req.params;
 
   try {
-    const deletedProduct = await model.findByIdAndDelete(id);
-    if (!deletedProduct) {
-      return res.status(404).send({ error: 'Product not found' });
-    }
-    res.send(deletedProduct);
+      let product;
+      switch (collection) {
+          case 'Alcohol':
+              product = await Alcohol.findById(id); 
+              break;
+          case 'alcfree':
+              product = await AlcoholFree.findById(id); 
+              break;
+          case 'dessert':
+              product = await Dessert.findById(id); 
+              break;
+          case 'grill':
+              product = await Grill.findById(id); 
+              break;
+          case 'bread':
+              product = await Breads.findById(id); 
+              break;
+          case 'hotdish':
+              product = await HotDishes.findById(id); 
+              break;
+          case 'maindish':
+              product = await MainDishes.findById(id); 
+              break;
+          case 'salad':
+              product = await Salad.findById(id); 
+              break;
+          case 'soup':
+              product = await Soup.findById(id); 
+              break;
+          case 'topping':
+              product = await Topping.findById(id); 
+              break;
+          default:
+              return res.status(400).json({ error: 'Невалидно име на колекция' });
+      }
+
+      if (!product) {
+          return res.status(404).json({ error: 'Продуктът не е намерен' });
+      }
+
+      res.status(200).json(product);
   } catch (error) {
-    res.status(500).send({ error: 'Server error' });
+      console.error('Грешка при вземане на данни от колекция:', error);
+      res.status(500).json({ error: 'Грешка при вземане на данни' });
   }
 };
+
+const updateProductById = async (req, res) => {
+  let { collection, id } = req.params;
+  const updateData = req.body; // Не е нужно да се използва деструктуриране тук
+
+  const collectionsMap = {
+    'Alcohol': Alcohol,
+    'alcfree': AlcoholFree,
+    'dessert': Dessert,
+    'grill': Grill,
+    'bread': Breads,
+    'hotdish': HotDishes,
+    'maindish': MainDishes,
+    'salad': Salad,
+    'soup': Soup,
+    'topping': Topping,
+  };
+
+  try {
+    const Model = collectionsMap[collection];
+
+    if (!Model) {
+      return res.status(400).json({ error: 'Невалидно име на колекция' });
+    }
+
+    const updatedProduct = await Model.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: 'Продуктът не е намерен' });
+    }
+
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error('Грешка при актуализиране на продукта:', error);
+    res.status(500).json({ error: 'Грешка при актуализиране на продукта' });
+  }
+};
+
 
   module.exports = { 
     getCollectionData,
     addProductToCollection,
     deleteProduct,
+    getCurrentProduct,
+    updateProductById,
   };

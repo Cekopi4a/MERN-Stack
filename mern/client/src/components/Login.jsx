@@ -13,26 +13,28 @@ const Login = () => {
   const [queryParameters] = useSearchParams();
 
 
-
-
-useEffect(() => {
-  async function loginWithDecryptedData() {
-    try {
-        const encryptedEmail = queryParameters.get('email');
-        const encryptedPassword = queryParameters.get('password');
-      await login(encryptedEmail, encryptedPassword);
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Грешни данни за вход!",
-      });
-      console.error('Error logging in:', error);
+  useEffect(() => {
+    async function loginWithDecryptedData() {
+      const encryptedEmail = queryParameters.get('email');
+      const encryptedPassword = queryParameters.get('password');
+  
+      if (encryptedEmail && encryptedPassword) {
+        try {
+          await login(encryptedEmail, encryptedPassword);
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Грешни данни за вход!",
+          });
+          console.error('Error logging in:', error);
+        }
+      }
     }
-  }
-
-  loginWithDecryptedData();
-}, []);
+  
+    loginWithDecryptedData();
+  }, []);
+  
 
 
 
@@ -115,8 +117,8 @@ useEffect(() => {
   return (
 <div className='container'>
    <h1>Вход</h1>
-   <div class="text-center">
-  <img src="../img/qr.jpg" class="img-fluid" alt="..."></img>
+   <div className="text-center">
+  <img src="../img/qr.jpg" className="img-fluid" alt="..."></img>
 </div>
  <h1>Сканирай QR кода</h1>
       {scanResult ? (

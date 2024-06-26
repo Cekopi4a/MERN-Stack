@@ -5,8 +5,9 @@ export const useLogout = () => {
 
   const logout = () => {
     // remove user from storage
-    document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/'; // Remove cookie
+    document.cookie = 'user=; expires=Thu, 01 Jan 1975 00:00:00 UTC; path=/'; // Remove cookie
     localStorage.removeItem('cartItems')
+    console.log("1");
 
     // dispatch logout action
     dispatch({ type: 'LOGOUT' })

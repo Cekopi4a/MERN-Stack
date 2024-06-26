@@ -142,8 +142,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import io from 'socket.io-client';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+const socket = io('http://localhost:5050'); 
 
 const CookOrder = () => {
   const [orders, setOrders] = useState([]);
@@ -176,31 +179,62 @@ const CookOrder = () => {
     };
 
     fetchOrders();
-  }, [user.token]);
 
- 
+    // Set up Socket.IO listener
+    socket.on('orderUpdated', (change) => {
+      if (change.operationType === 'update') {
+        setOrders((prevOrders) => prevOrders.map(order =>
+          order._id === change.documentKey._id ? { ...order, ...change.updateDescription.updatedFields } : order
+        ));
+      } else if (change.operationType === 'insert') {
+        setOrders((prevOrders) => [...prevOrders, change.fullDocument]);
+      } else if (change.operationType === 'delete') {
+        setOrders((prevOrders) => prevOrders.filter(order => order._id !== change.documentKey._id));
+      }
+    });
+
+    return () => {
+      socket.off('orderUpdated');
+    };
+  }, [orders]);
 
   const handleApprove = async (orderId) => {
-            console.log(orderId);
-              try {
-            const response = await fetch(`http://localhost:5050/api/order/putReadyOrder/${orderId}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.token}`
-            }
-          });
-          const json = await response.json();
-    
-          if (!response.ok) {
-            throw new Error('Неуспешна заявка за одобряване на поръчка');
-          }
-          alert('Поръчката беше успешно одобрена!');
-        } catch (error) {
-          console.error('Грешка при одобряване на поръчка:', error);
-          alert('Грешка при одобряване на поръчка. Моля, опитайте отново.');
+    try {
+      const response = await fetch(`http://localhost:5050/api/order/putReadyOrder/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
         }
-      };
+      });
+
+      if (!response.ok) {
+        throw new Error('Неуспешна заявка за одобряване на поръчка');
+      }
+
+      const json = await response.json();
+      setOrders((prevOrders) => prevOrders.map(order =>
+        order._id === orderId ? { ...order, status: 'ready' } : order
+      ));
+
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: "Поръчката беше успешно одобрена!",
+        showConfirmButton: false,
+        timer: 1850
+      });
+    } catch (error) {
+      console.error('Грешка при одобряване на поръчка:', error);
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "Грешка при одобряване на поръчка. Моля, опитайте отново.",
+        showConfirmButton: false,
+        timer: 1850
+      });
+    }
+  };
 
   return (
     <div className="container mt-4">

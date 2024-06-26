@@ -52,7 +52,7 @@ Swal.fire({
                    {user.role == "guest" && (
                     <>
                   <li className="nav-item"><Link className="nav-link active" aria-current="page" to="/shop">Поръчай</Link></li>
-                 <li className="nav-item"><Link className="nav-link active" aria-current="page" onClick={callWaiter} >Call Waiter!</Link></li>
+                 <li className="nav-item"><Link className="nav-link active" aria-current="page" onClick={callWaiter} >Извикай сервитьор!</Link></li>
                    </>
                    )}
                 {(user.role == "admin" || user.role == "waiter") && (
@@ -79,7 +79,7 @@ Swal.fire({
           {user.role == "guest" && (
             <>
           <span className={style.name}>
-        Твоята маса е:{user.table}
+        Вашата маса е: {user.table}
       </span>
       
                 <Link to="/cart">
@@ -93,8 +93,7 @@ Swal.fire({
                 </Link>
           </>
           )}
-          
-                 <div className="nav-item"><Link className="nav-link" onClick={handleClick}>Излез</Link></div>  
+                 <div className="nav-item m-2 m"><Link className="nav-link" onClick={handleClick}>Излез</Link></div>  
                  </>  
       )}
             </div>

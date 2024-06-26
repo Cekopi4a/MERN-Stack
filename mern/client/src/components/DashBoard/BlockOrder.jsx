@@ -3,14 +3,14 @@ import Swal from 'sweetalert2';
 import { useState,useEffect } from 'react';
 import {useAuthContext} from '../../hooks/useAuthContext';
 
-const AllOrder = () => {
+const BlockOrder = () => {
     const [orders,setOrders] = useState([]);
     const { user } = useAuthContext();
     
     useEffect(() => {
         const fetchOrders = async () => {
           try {
-            const response = await fetch(`http://localhost:5050/api/order/getNewOrder`, {
+            const response = await fetch(`http://localhost:5050/api/order/getBlockOrders`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -62,33 +62,11 @@ const AllOrder = () => {
   }
 };
 
-const handlefinnishOrder = async (orderId) => {
+const handleDeleteOrder = async (orderId) => {
   console.log(orderId);
     try {
-  const response = await fetch(`http://localhost:5050/api/order/putReadyOrder/${orderId}`, {
-  method: 'PUT',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${user.token}`
-  }
-});
-const json = await response.json();
-
-if (!response.ok) {
-  throw new Error('Неуспешна заявка за одобряване на поръчка');
-}
-alert('Поръчката беше успешно одобрена!');
-} catch (error) {
-console.error('Грешка при одобряване на поръчка:', error);
-alert('Грешка при одобряване на поръчка. Моля, опитайте отново.');
-}
-};
-
-const handleBlockOrder = async (orderId) => {
-  console.log(orderId);
-    try {
-  const response = await fetch(`http://localhost:5050/api/order/blockOrder/${orderId}`, {
-  method: 'PUT',
+  const response = await fetch(`http://localhost:5050/api/order/deleteOrder/${orderId}`, {
+  method: 'DELETE',
   headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${user.token}`
@@ -108,7 +86,7 @@ alert('Грешка при одобряване на поръчка. Моля, �
 
 return (
   <div className="container mt-4">
-      <h1 className="mb-4">Нови Поръчки</h1>
+      <h1 className="mb-4">Блокирани Поръчки</h1>
       <ul className="list-group">
         {orders.map(order => (
           <li key={order._id.$oid} className="list-group-item mb-3">
@@ -134,9 +112,8 @@ return (
                 </li>
               ))}
             </ul>
-            <button className="btn btn-primary m-3" onClick={() => handleApprove(order._id)}>Одобри поръчка</button>
-            <button className="btn btn-success m-3" onClick={() => handlefinnishOrder(order._id)}>Завърши поръчка</button>
-            <button className="btn btn-danger" onClick={() => handleBlockOrder(order._id)}>Блокирай поръчка</button>
+            <button className="btn btn-primary m-2" onClick={() => handleApprove(order._id)}>Отблокирай поръчка</button>
+            <button className="btn btn-danger m-2" onClick={() => handleDeleteOrder(order._id)}>Изтрий поръчка</button>
         </li>
         ))}
       </ul>
@@ -144,4 +121,4 @@ return (
 )
 }
 
-export default AllOrder;
+export default BlockOrder;

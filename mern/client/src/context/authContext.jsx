@@ -8,7 +8,8 @@ export const authReducer = (state, action) => {
     case 'LOGIN':
       return { user: action.payload }
     case 'LOGOUT':
-      return document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+      return localStorage.removeItem('cartItems'),
+      document.cookie = 'user=; expires=Thu, 01 Jan 1972 00:00:00 UTC; path=/';
     default:
       return state
   }

@@ -126,7 +126,42 @@ const putReadyOrders = async (req, res) => {
   }
 };
 
+const getBlockOrders = async (req, res) => {
+  try {
+    const newOrders = await Order.find({ status: 'Rejected' });
+    res.json(newOrders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
+const blockOrder = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Rejected' }, { new: true });
+    res.json(updatedOrder);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+const deleteOrder = async (req, res) => {
+  const orderId = req.params.id;
+
+  try {
+  
+    const deleteOrder = await Order.findByIdAndDelete(orderId);
+
+    if (!deleteOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.json(deleteOrder);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 module.exports = {
   addOrder,
@@ -137,5 +172,8 @@ module.exports = {
     getApprovedOrders,
     putReadyOrders,
     getReadyOrders,
-    finnishOrder
+    finnishOrder,
+    getBlockOrders,
+    blockOrder,
+    deleteOrder
 }

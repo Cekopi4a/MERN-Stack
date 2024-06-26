@@ -69,40 +69,56 @@ const callWaiter = async () => {
 }
 
 
+
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const locationValid = await checkLocation();
-      if (locationValid) {
+      const storedLocationStatus = sessionStorage.getItem('locationValid');
+      if (storedLocationStatus === 'true') {
         setLocationValid(true);
         setMessage('Вие сте в правилната локация.');
         Swal.fire({
           position: "top-center",
           icon: "success",
-          title: "You are at the right place!",
+          title: "Успешен вход да ви е сладко!",
           showConfirmButton: false,
           timer: 1500
         });
       } else {
-        Swal.fire({
-          title: "Вие не сте в правилната локация!",
-          text: "Мислите ли, че има проблем?",
-          icon: "error",
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Извикай сервитьор!"
-        }).then((result) => {
-          logout();
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: "Обработка на заявката!",
-              text: "Сервитьорът идва!",
-              icon: "success"
-            }).then(() => {
-              callWaiter();
-              logout();
-            });
-          }
-        });
+        const locationValid = await checkLocation();
+        if (locationValid) {
+          setLocationValid(true);
+          setMessage('Вие сте в правилната локация.');
+          sessionStorage.setItem('locationValid', 'true');
+          Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Успешен вход да ви е сладко!",
+            showConfirmButton: false,
+            timer: 2500
+          });
+        } else {
+          sessionStorage.setItem('locationValid', 'false');
+          Swal.fire({
+            title: "Вие не сте в правилната локация!",
+            text: "Мислите ли, че има проблем?",
+            icon: "error",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Извикай сервитьор!"
+          }).then((result) => {
+            logout();
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Обработка на заявката!",
+                text: "Сервитьорът идва!",
+                icon: "success"
+              }).then(() => {
+                callWaiter();
+                logout();
+              });
+            }
+          });
+        }
       }
     } catch (error) {
       logout();
@@ -110,8 +126,11 @@ useEffect(() => {
     }
   };
 
-  fetchData();
-}, [locationValid]);
+  if (!sessionStorage.getItem('locationChecked')) {
+    fetchData();
+    sessionStorage.setItem('locationChecked', 'true');
+  }
+}, [logout]);
 
 const isInBounds = (lat, long) => {
   const minLat = 42.43;
@@ -121,21 +140,21 @@ const isInBounds = (lat, long) => {
   return lat >= minLat && lat <= maxLat && long >= minLong && long <= maxLong;
 };
 
-  const checkLocation = () => {
-    return new Promise((resolve, reject) => {
-      if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition((position) => {
-              const { latitude, longitude } = position.coords;
-              // Тук проверяваме локацията спрямо границите
-              const locationValid = isInBounds(latitude, longitude);
-              console.log(position.coords);
-              resolve(locationValid);
-          }, (error) => {
-              reject(new Error(`Грешка при извличане на локацията: ${error.message}`));
-          });
-      } else {
-          reject(new Error('Геолокацията не е поддържана от вашия браузър.'));
-      }
+const checkLocation = () => {
+  return new Promise((resolve, reject) => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        // Тук проверяваме локацията спрямо границите
+        const locationValid = isInBounds(latitude, longitude);
+        console.log(position.coords);
+        resolve(locationValid);
+      }, (error) => {
+        reject(new Error(`Грешка при извличане на локацията: ${error.message}`));
+      });
+    } else {
+      reject(new Error('Геолокацията не е поддържана от вашия браузър.'));
+    }
   });
 };
 
@@ -331,7 +350,7 @@ const isInBounds = (lat, long) => {
             </div>
             <div className="row gy-5">
             {items.map((item) => (
-              <div className="col-lg-4 menu-item">
+              <div className="col-lg-4 menu-item"  key={item.id}>
                 <a href="assets/img/menu/menu-item-1.png" className="glightbox">
                   <img
                     src={item.imageUrl}
