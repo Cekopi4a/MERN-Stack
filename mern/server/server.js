@@ -167,10 +167,8 @@ app.use((err, req, res, next) => {
 
 
 //Mongo DB
-mongoose.connect('mongodb+srv://analytics:Cekopi4a@cluster0.slg4lq3.mongodb.net/Restaurant?retryWrites=true&w=majority&appName=Cluster0',{
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect('mongodb+srv://analytics:Cekopi4a@cluster0.slg4lq3.mongodb.net/Restaurant?retryWrites=true&w=majority&appName=Cluster0'
+)
   .then(()=> console.log('Connected to MongoDB!'))
   .catch((error) => console.error('Failed to connect!!!',error))
 
