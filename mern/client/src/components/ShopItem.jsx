@@ -43,7 +43,7 @@ return (
             <div className={`col-md-${viewType === 'list' ? '8' : '12'}`}>
                 <div className="card-body p-4">
                     <div className={`text-${viewType === 'list' ? 'start' : 'center'}`}>
-                        <h5 className="fw-bolder" style={{ height: "83px",position: "static" }}>{name}</h5>
+                        <h5 className="fw-bolder" style={{ height: "76px",position: "static" }}>{name}</h5>
                         <p>
                         {price.toFixed(2)} лв.- {weight} {volume}.
                         </p>
@@ -69,7 +69,7 @@ return (
                                 <button onClick={() => addToCart(cart, Swal.fire({
                                     position: 'center',
                                     icon: 'success',
-                                    title: 'Food added on the cart.',
+                                    title: 'Продукта е добавен успешно!',
                                     showConfirmButton: false,
                                     timer: 1500
                                 }))} className="btn border border-secondary rounded-pill px-3 text-primary">

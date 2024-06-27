@@ -104,6 +104,15 @@ const finnishOrder = async (req, res) => {
   }
 };
 
+const getFinnishOrders = async (req, res) => {
+  try {
+    const newOrders = await Order.find({ status: 'Finnish' });
+    res.json(newOrders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 
 //Cook
@@ -175,5 +184,6 @@ module.exports = {
     finnishOrder,
     getBlockOrders,
     blockOrder,
-    deleteOrder
+    deleteOrder,
+    getFinnishOrders
 }

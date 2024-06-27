@@ -1,7 +1,6 @@
-import React,{ useState,useEffect } from "react";
-import { Link } from 'react-router-dom' 
-import { useContext } from 'react';
-import {AuthContext} from './../../context/AuthContext';
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from 'react-router-dom';
+import { AuthContext } from './../../context/AuthContext';
 import AllOrder from "./AllOrder";
 import CookOrder from "./CookOrder";
 import ReadyOrder from "./ReadyOrder";
@@ -9,8 +8,8 @@ import Users from "./Users";
 import Crypto from "../Crypto";
 import AddProduct from "./AddProduct";
 import Swal from 'sweetalert2';
-import { client } from './waiterClient'; 
 import BlockOrder from "./BlockOrder";
+import FinnishOrder from "./FinnishOrder";
 
 const componentMap = {
     showComponent1: () => <AllOrder />,
@@ -20,34 +19,58 @@ const componentMap = {
     showComponent5: () => <Crypto />,
     showComponent6: () => <AddProduct />,
     showComponent7: () => <BlockOrder />,
-    
+    showComponent8: () => <FinnishOrder />,
 };
 
 const DashBoard = () => {
   const { user } = useContext(AuthContext);
   const [message, setMessage] = useState({});
   const [activeComponent, setActiveComponent] = useState(null);
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:8080');
+
+    socket.onopen = () => {
+      console.log('WebSocket връзката е установена.');
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket връзката е затворена.');
+    };
+
+    socket.onerror = (error) => {
+      console.error('WebSocket грешка:', error);
+    };
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.action === 'call_waiter') {
+        setNotifications((prevNotifications) => [...prevNotifications, `Маса ${data.table} извика сервитьор`]);
+        Swal.fire({
+          position: 'top',
+          icon: 'info',
+          title: `Маса ${data.table} извика сервитьор`,
+          showConfirmButton: true,
+        });
+      }
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   const handleComponentChange = (componentKey) => {
     setActiveComponent(componentKey);
   };
 
-  useEffect(() => {
-  if(user.role == "waiter"){
-    client.onmessage = function(e) {
-      if (typeof e.data === 'string') {
-        setMessage(e.data);
-        Swal.fire(message);
-      }
-    };
-  }
-  else{
-  }
-    return () => {
-      client.onmessage = null;
-    };
-
-  }, [message]);
+  const renderActiveComponent = () => {
+    if (activeComponent && componentMap[activeComponent]) {
+      return componentMap[activeComponent]();
+    }
+    return null;
+  };
   
 
 
@@ -111,6 +134,12 @@ return(
         <Link className="nav-link" onClick={() => handleComponentChange('BlockOrder')}>
          <i className="bi bi-list-ul" />
          <span>Блокирани поръчки</span>
+       </Link>
+     </li>
+     <li className="nav-item">
+        <Link className="nav-link" onClick={() => handleComponentChange('FinnishOrder')}>
+         <i className="bi bi-list-ul" />
+         <span>Приключени поръчки</span>
        </Link>
      </li>
      <li className="nav-item">
@@ -277,6 +306,7 @@ return(
           {activeComponent === 'Crypto' && <Crypto />}
           {activeComponent === 'AddProduct' && <AddProduct />}
           {activeComponent === 'BlockOrder' && <BlockOrder />}
+          {activeComponent === 'FinnishOrder' && <FinnishOrder />}
 
         
 
