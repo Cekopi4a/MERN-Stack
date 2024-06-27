@@ -49,6 +49,7 @@ wss.on('connection', (ws) => {
   });
 });
 
+console.log("hello");
 
 
 const PORT = process.env.PORT || 5050;
