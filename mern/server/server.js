@@ -53,7 +53,13 @@ wss.on('connection', (ws) => {
 
 const PORT = process.env.PORT || 5050;
 const app = express();
-app.use(cors());
+app.use(cors(
+  {
+    origin: ["mern-stack-back-end.vercel.app"], 
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+  }
+));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
