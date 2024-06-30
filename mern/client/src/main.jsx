@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { BrowserRouter} from 'react-router-dom'
-import { AuthContextProvider } from './аuthContext.jsx'
-import { CartProvider } from './cartContext.jsx'
-import { OrderProvider} from './OrderContext.jsx'
+import { AuthContextProvider } from '../context/аuthContext.jsx'
+import { CartProvider } from '../context/cartContext.jsx'
+import { OrderProvider} from '../context/OrderContext.jsx'
 import './i18n'; // Инициализация на i18n
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
