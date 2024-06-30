@@ -56,7 +56,7 @@ const PORT = process.env.PORT || 5050;
 const app = express();
 app.use(cors(
   {
-    origin: ["mern-stack-back-end.vercel.app"], 
+    origin: ["https://front-mern-fnbw4444l-cekos-projects.vercel.app/"], 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   }
@@ -64,7 +64,7 @@ app.use(cors(
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Адресът на вашето React приложение
+    origin: "https://front-mern-fnbw4444l-cekos-projects.vercel.app/", // Адресът на вашето React приложение
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   }
